@@ -9,7 +9,7 @@ CREATE TABLE User(
 
 CREATE TABLE Administrator(
 	Admin_access_level INT,
-	User_ID CHAR(10)	NOT NULL,
+	UserID CHAR(10)	NOT NULL,
 	AdminID CHAR(10) NOT NULL,
 	PRIMARY KEY (UserID),
 	FOREIGN KEY (Username) REFERENCES User (UserID) ON DELETE CASCADE
@@ -84,7 +84,7 @@ CREATE TABLE Comment(
 
 CREATE TABLE ReplyTo(
 	ReplyID CHAR(20)		NOT NULL, 
-    User ID CHAR(10)		NOT NULL, 
+    UserID CHAR(10)		NOT NULL, 
     CommentID CHAR(20)	NOT NULL, 
     Content CHAR(100)		NOT NULL, 
     Time CHAR(20)		NOT NULL,
