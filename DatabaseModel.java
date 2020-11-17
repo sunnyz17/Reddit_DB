@@ -5,21 +5,20 @@ public class DatabaseModel{
     private final String UserID;
     private final String Username;
     private final String Time;
-    private final String UserID;
     private final String Content;
-    private final String PostID;
+    private final int PostID;
     private final String AdminID;
     private final String TopicID;
     private final Boolean Trending;
     private final String ReplyID;
     private final String CommentID;
-    private final Int Karma;
-    private final Int numberofLikes;
-    private final Int Admin_access_level;
+    private final int Karma;
+    private final int numberofLikes;
+    private final int Admin_access_level;
     
     
 
-    public UserModel(String email, String password, Int Karma, String UserID, String Username){
+    public UserModel(String email, String password, int Karma, String UserID, String Username){
         this.email = email;
         this.password = password;
         this.Username = Username;
@@ -27,32 +26,32 @@ public class DatabaseModel{
         this.Karma = Karma;
     }
 
-    public AdministratorModel(Int Admin_access_level, String UserID, String AdminID){
+    public AdministratorModel(int Admin_access_level, String UserID, String AdminID){
         this.Admin_access_level = Admin_access_level;
         this.UserID = UserID;
         this.AdminID = AdminID;
     }
 
-    public PostModel(String PostID, String Content, String UserID, String Time){
+    public PostModel(int PostID, String Content, String UserID, String Time){
         this.PostID = PostID;
         this.Content = Content;
         this.UserID = UserID;
         this.Time = Time;
     }
 
-    public LikedPostModel(String PostID, Boolean Trending, Int numberofLikes){
+    public LikedPostModel(int PostID, Boolean Trending, int numberofLikes){
         this.PostID = PostID;
         this.Trending = Trending;
         this.numberofLikes = numberofLikes;
     } 
 
-    public TrendingTopicModel(String TopicID, String Content, String PostID){
+    public TrendingTopicModel(String TopicID, String Content, int PostID){
         this.TopicID = TopicID;
         this.Content=  Content;
         this.PostID = PostID;
     }
 
-    public CommentModel(String CommentID, String UserID, String PostID, String Time, String Content){
+    public CommentModel(String CommentID, String UserID, int PostID, String Time, String Content){
         this.CommentID = CommentID;
         this.UserID = UserID;
         this.PostID = PostID;
@@ -100,11 +99,11 @@ public class DatabaseModel{
         return email;
     }
 
-    public Int getKarma(){
+    public int getKarma(){
         return Karma;
     }
 
-    public Int getAdmin_access_level(){
+    public int getAdmin_access_level(){
         return Admin_access_level;
     }
 
@@ -116,7 +115,15 @@ public class DatabaseModel{
         return password;
     }
 
-    public Int getnumberofLikes(){
+    public int getnumberofLikes(){
         return numberofLikes;
+    }
+
+    public int getPostID(){
+        return PostID;
+    }
+
+    public Boolean getTrending(){
+        return Trending;
     }
 }
