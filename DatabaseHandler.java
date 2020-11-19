@@ -59,6 +59,53 @@ public class DatabaseHandler{
             }
         }
 
+        public void selectPost(){
+            
+            try(
+                
+                Connection conn = DriverManager.getConnection(); //insert database connection url here
+                
+                Statement stmt = conn.createStatement();)
+                ){
+                    //INSERT SQL SELECT STATEMENT HERE
+                    String strSelect = "";
+                    
+                    ResultSet rset = stmt.executeQuery(strSelect);
+                    System.out.println("The records selected are:");
+                    int rowCount = 0;
+                    
+                    //here, you select each entitites from the Post table 
+                    //TODO: add the entities and coressponding methods to get it 
+                    while(rset.next()){
+                        
+                    }
+                    //ie
+                    // while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                    //     String title = rset.getString("title");
+                    //     double price = rset.getDouble("price");
+                    //     int    qty   = rset.getInt("qty");
+                    //     System.out.println(title + ", " + price + ", " + qty);
+                    //     ++rowCount;
+                    //  }
+                }catch(SQLException ex){
+                    ex.printStackTrace();
+                }
+        }
+
+
+        public void insertPost(){
+            try(
+                Connection conn = DriverManager.getConnection(
+
+                );
+                Statement stmt = conn.createStatement();
+            ){
+
+            }catch(SQLException ex){
+                ex.printStackTrace();
+            }
+        }
+
 
 
     }
