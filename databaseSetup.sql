@@ -1,29 +1,29 @@
 CREATE TABLE User(
-	Email	CHAR(20)	NOT NULL,
-	Password CHAR	NOT NULL,
-	Karma	INT,
-	UserID CHAR(10)	NOT NULL,
-	Username CHAR(10)	NOT NULL,
-	PRIMARY KEY (Username) 
+	Email CHAR(20) NOT NULL,
+	Password CHAR NOT NULL,
+	Karma INT,
+	UserID CHAR(10) NOT NULL,
+	Username CHAR(10) NOT NULL,
+	PRIMARY KEY (UserID) 
 );
 
 CREATE TABLE Administrator(
 	Admin_access_level INT,
-	UserID CHAR(10)	NOT NULL,
+	UserID CHAR(10) NOT NULL,
 	AdminID CHAR(10) NOT NULL,
+	Username CHAR(10) NOT NULL,
 	PRIMARY KEY (UserID),
-	FOREIGN KEY (Username) REFERENCES User (UserID) ON DELETE CASCADE
+	FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE
 );
 
 CREATE TABLE LocationOf(
-	Latitude DECIMAL(8,6)		NOT NULL,
-	Longitude DECIMAL(8,6)		NOT NULL,
+	Latitude DECIMAL(8,6) NOT NULL,
+	Longitude DECIMAL(8,6) NOT NULL,
 	Address CHAR(50),
 	Time CHAR(20),
 	PRIMARY KEY (Latitude, Longitude),
     FOREIGN KEY (UserID) REFERENCES User (User) ON DELETE CASCADE
     FOREIGN KEY (PostID) REFERENCES Post (Post) ON DELETE CASCADE
-
 );
 
 CREATE TABLE Post(
@@ -110,7 +110,6 @@ VALUES (‘holygrail98@hotmail.com’, ‘uikjawds’, ‘5081’, ‘U4472’, 
 
 
 
-Administrator TABLE:
 
 INSERT INTO Administrator(User_ID, AdminID, Admin_access_level)
 VALUES (‘U4468’, ‘8888’, ‘5’);
@@ -127,7 +126,7 @@ VALUES (‘U4321’, ‘2222’, ‘3’);
 INSERT INTO Administrator(User_ID, AdminID, Admin_access_level)
 VALUES (‘U4111’, ‘3333’, ‘1’);
 
-LocationOf TABLE:
+
 
 INSERT INTO LocationOf(Latitude, Longitude, Address, Time)
 VALUES (‘42.546245’ , ‘1.601554’, ‘king Street’, ‘14:50’);
@@ -144,7 +143,7 @@ VALUES (‘36.986531’ , ‘16.233875’, ‘1st Street’, ‘16:33’);
 INSERT INTO LocationOf(Latitude, Longitude, Address, Time)
 VALUES (‘57.378612’ , ‘23.984612’, ‘Granville Street’, ‘13:42’);
 
-Post TABLE:
+
 
 INSERT INTO Post(PostID, Content, UserID, Time)
 VALUES( ‘12250’， ‘Trump is back’, ‘US_Patriot’, ‘U2445’, ‘13:24’);
@@ -162,7 +161,6 @@ INSERT INTO Post(PostID, Content, UserID, Time)
 VALUES( ‘12250’， ‘Trump is back’, ‘US_Patriot’, ‘U2445’, ‘13:24’);
 
 
-PhotoIn TABLE:
 
 INSERT INTO PhotoIn (PhotoID, Size, Format, PostID)
 VALUES( ‘P12220’， ‘8775’, ‘JPEG’, ‘12250’);

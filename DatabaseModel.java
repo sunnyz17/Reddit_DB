@@ -1,3 +1,5 @@
+
+
 public class DatabaseModel{
 
     private final String email;
@@ -126,4 +128,5 @@ public class DatabaseModel{
     public Boolean getTrending(){
         return Trending;
     }
+
 }

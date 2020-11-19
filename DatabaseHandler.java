@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.sql.*;
 
 import DatabaseModel;
 
@@ -57,12 +58,6 @@ public class DatabaseHandler{
                 rollbackConnection();
             }
         }
-
-
-
-
-
-
 
 
 
