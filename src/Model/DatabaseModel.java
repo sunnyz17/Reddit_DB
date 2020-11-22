@@ -12,7 +12,7 @@ public class DatabaseModel{
     private final int AdminID;
     private final String TopicID;
     private final Boolean Trending;
-    private final String ReplyID;
+    private final int ReplyID;
     private final int CommentID;
     private final int Karma;
     private final int numberofLikes;
@@ -60,7 +60,7 @@ public class DatabaseModel{
         this.Content = Content;
     }
 
-    public ReplyToModel(String ReplyID, int UserID, int CommentID, String Content, String Time){
+    public ReplyToModel(int ReplyID, int UserID, int CommentID, String Content, String Time){
         this.ReplyID = ReplyID;
         this.UserID= UserID;
         this.CommentID = CommentID;
@@ -68,11 +68,11 @@ public class DatabaseModel{
         this.Time = Time;
     }
 
-    public String getUserID(){
+    public int getUserID(){
         return UserID;
     }
 
-    public String getReplyID(){
+    public int getReplyID(){
         return ReplyID;
     }
 
@@ -88,11 +88,11 @@ public class DatabaseModel{
         return Content;
     }
 
-    public String getCommentID(){
+    public int getCommentID(){
         return CommentID;
     }
 
-    public String getAdminID(){
+    public int getAdminID(){
         return AdminID;
     }
 
