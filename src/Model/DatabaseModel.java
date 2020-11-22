@@ -3,37 +3,37 @@ package src.Model;
 public class DatabaseModel{
 
     private final String email;
-    private final String password;
-    private final String UserID;
+    private final String pass;
+    private final int UserID;
     private final String Username;
     private final String Time;
     private final String Content;
     private final int PostID;
-    private final String AdminID;
+    private final int AdminID;
     private final String TopicID;
     private final Boolean Trending;
     private final String ReplyID;
-    private final String CommentID;
+    private final int CommentID;
     private final int Karma;
     private final int numberofLikes;
     private final int Admin_access_level;
     
 
-    public UserModel(String email, String password, int Karma, String UserID, String Username){
+    public UserModel(String email, String pass, int Karma, int UserID, String Username){
         this.email = email;
-        this.password = password;
+        this.pass = pass;
         this.Username = Username;
         this.UserID = UserID;
         this.Karma = Karma;
     }
 
-    public AdministratorModel(int Admin_access_level, String UserID, String AdminID){
+    public AdministratorModel(int Admin_access_level, int UserID, int AdminID){
         this.Admin_access_level = Admin_access_level;
         this.UserID = UserID;
         this.AdminID = AdminID;
     }
 
-    public PostModel(int PostID, String Content, String UserID, String Time){
+    public PostModel(int PostID, String Content, int UserID, String Time){
         this.PostID = PostID;
         this.Content = Content;
         this.UserID = UserID;
@@ -52,7 +52,7 @@ public class DatabaseModel{
         this.PostID = PostID;
     }
 
-    public CommentModel(String CommentID, String UserID, int PostID, String Time, String Content){
+    public CommentModel(int CommentID, int UserID, int PostID, String Time, String Content){
         this.CommentID = CommentID;
         this.UserID = UserID;
         this.PostID = PostID;
@@ -60,7 +60,7 @@ public class DatabaseModel{
         this.Content = Content;
     }
 
-    public ReplyToModel(String ReplyID, String UserID, String CommentID, String Content, String Time){
+    public ReplyToModel(String ReplyID, int UserID, int CommentID, String Content, String Time){
         this.ReplyID = ReplyID;
         this.UserID= UserID;
         this.CommentID = CommentID;
@@ -112,8 +112,8 @@ public class DatabaseModel{
         return Username;
     }
 
-    public String getPassword(){
-        return password;
+    public String getPass(){
+        return pass;
     }
 
     public int getnumberofLikes(){
