@@ -35,7 +35,7 @@ CREATE TABLE Post(
 	PostID integer	NOT NULL,
 	Content CHAR(200)	NOT NULL,
 	UserID integer	NOT NULL,
-	timee CHAR(20)	NOT NULL,
+	time CHAR(20)	NOT NULL,
 	PRIMARY KEY(PostID),
 	FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE
 );
@@ -44,7 +44,7 @@ CREATE TABLE LocationOf_r1(
 	Latitude DECIMAL(8,6) NOT NULL,
 	Longitude DECIMAL(8,6) NOT NULL,
 
-	timee CHAR(20),
+	time CHAR(20),
     UserID INT NOT NULL,
 	PostID integer NOT NULL,
 	PRIMARY KEY (Latitude, Longitude),
@@ -64,7 +64,7 @@ CREATE TABLE LocationOf_r2(
 	Latitude DECIMAL(8,6) NOT NULL,
 	Longitude DECIMAL(8,6) NOT NULL,
 	Address CHAR(50),
-	timee CHAR(20),
+	time CHAR(20),
     UserID INT NOT NULL,
 	PostID integer NOT NULL,
 	PRIMARY KEY (Latitude, Longitude),
@@ -107,7 +107,7 @@ CREATE TABLE TrendingTopic(
 
 CREATE TABLE VoteFor(
 	VoteID integer,		
-    timee CHAR(20),	
+    time CHAR(20),
     UserID integer	NOT NULL,
     PostID integer	NOT NULL,
     PRIMARY KEY (VoteID),
@@ -119,7 +119,7 @@ CREATE TABLE Comment(
 	CommentID integer	NOT NULL, 
     UserID integer		NOT NULL,
     PostID integer		NOT NULL,
-    timee CHAR(20)		NOT NULL,
+    time CHAR(20)		NOT NULL,
     Content text		NOT NULL,
     PRIMARY KEY (CommentID),
     FOREIGN KEY (UserID) REFERENCES Post (UserID) ON DELETE CASCADE,
@@ -131,7 +131,7 @@ CREATE TABLE Comment(
     UserID integer		NOT NULL, 
     CommentID integer	NOT NULL, 
     Content CHAR(100)		NOT NULL, 
-    timee CHAR(20)		NOT NULL,
+    time CHAR(20)		NOT NULL,
     PRIMARY KEY (ReplyID),
     FOREIGN KEY (UserID) REFERENCES Post (UserID) ON DELETE CASCADE,
     FOREIGN KEY (CommentID) REFERENCES Comment (CommentID) ON DELETE CASCADE
@@ -140,7 +140,7 @@ CREATE TABLE Comment(
 CREATE TABLE ReplyTo_r1(
 	ReplyID integer		NOT NULL,
     Content CHAR(100)		NOT NULL,
-    timee CHAR(20)		NOT NULL,
+    time CHAR(20)		NOT NULL,
     PRIMARY KEY (ReplyID),
     FOREIGN KEY (UserID) REFERENCES Post (UserID) ON DELETE CASCADE,
     FOREIGN KEY (CommentID) REFERENCES Comment (CommentID) ON DELETE CASCADE
@@ -212,17 +212,17 @@ INSERT INTO Administrator_r2(UserID, Admin_access_level)
 VALUES (4472, 2222, 3);
 
 -- need new insert queries for locationof Table
-INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
-VALUES (49.2606,-123.2460,"13:20", 4468,12250  );
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (49.2606,-123.2460,"2020.09.01", 4468,12250  );
 
-INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
-VALUES (49.3029,-124.2302,"13:20", 4469,12282  );
-INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
-VALUES (50.3029,-122.2302,"13:20", 4470,12253  );
-INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
-VALUES (49.2397,-122.2302,"13:20", 4471,12255  );
-INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
-VALUES (52.2783,-140.2312,"13:20", 4472,12256 );
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (49.3029,-124.2302,"2020.09.01", 4469,12282  );
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (50.3029,-122.2302,"2020.09.01", 4470,12253  );
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (49.2397,-122.2302,"2020.09.01", 4471,12255  );
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (52.2783,-140.2312,"2020.09.01", 4472,12256 );
 
 INSERT INTO LocationOf_r2(latitude, longitude, Address)
 VALUES(49.3029,-124.2302,"UBC");
@@ -236,20 +236,20 @@ INSERT INTO LocationOf_r2(latitude, longitude, Address)
 VALUES(52.2783,-140.2312,"Squamish");
 
 
-INSERT INTO Post(PostID, Content, UserID, timee)
-VALUES( 12250, "Trump is back",  4468, "13:20");
+INSERT INTO Post(PostID, Content, UserID, time)
+VALUES( 12250, "Trump is back",  4468, "2020.09.01");
 
-INSERT INTO Post(PostID, Content, UserID, timee)
-VALUES( 12282, "THello Worldk",  4469, "13:20");
+INSERT INTO Post(PostID, Content, UserID, time)
+VALUES( 12282, "THello Worldk",  4469, "2020.10.01");
 
-INSERT INTO Post(PostID, Content, UserID, timee)
-VALUES( 12253, "Trump is back",  4470, "13:20");
+INSERT INTO Post(PostID, Content, UserID, time)
+VALUES( 12253, "Trump is back",  4470, "2020.09.05");
 
-INSERT INTO Post(PostID, Content, UserID, timee)
-VALUES( 12255, "Trump is back",  4471, "13:20");
+INSERT INTO Post(PostID, Content, UserID, time)
+VALUES( 12255, "Trump is back",  4471, "2020.12.01");
 
-INSERT INTO Post(PostID, Content, UserID, timee)
-VALUES( 12256, "Trump is back",  4472, "13:20");
+INSERT INTO Post(PostID, Content, UserID, time)
+VALUES( 12256, "Trump is back",  4472, "2020.12.08");
 
 
 -- do we really need photoIn???
@@ -299,62 +299,62 @@ INSERT INTO TrendingTopic(TopicID, Content, PostID)
 VALUES("Coding", "How to use hashmap in java", 12250);
 
 
-INSERT INTO VoteFor(VoteID, timee, UserID, PostID)
-VALUES(44220, "16:23", 4468, 12250);
+INSERT INTO VoteFor(VoteID, time, UserID, PostID)
+VALUES(44220, "2020.09.01", 4468, 12250);
 
-INSERT INTO VoteFor(VoteID, timee, UserID, PostID)
-VALUES(44221, "16:23", 4470, 12255);
+INSERT INTO VoteFor(VoteID, time, UserID, PostID)
+VALUES(44221, "2020.09.01", 4470, 12255);
 
-INSERT INTO VoteFor(VoteID, timee, UserID, PostID)
-VALUES(44222, "16:23", 4471, 12253);
-
-
-
-INSERT INTO Comment( CommentID, UserId, PostID, timee, Content)
-VALUES(1, 4468, 12250, "19:12", "good point!");
-
-INSERT INTO Comment( CommentID, UserId, PostID, timee, Content)
-VALUES(2, 4469, 12250, "19:12", "good point!");
-
-INSERT INTO Comment( CommentID, UserId, PostID, timee, Content)
-VALUES(3, 4470, 12250, "19:22", "good idea!");
-
-INSERT INTO Comment( CommentID, UserId, PostID, timee, Content)
-VALUES(4, 4471, 12250, "19:32", "good question!");
-
-INSERT INTO Comment( CommentID, UserId, PostID, timee, Content)
-VALUES(5, 4472, 12250, "19:52", "good discussion!");
+INSERT INTO VoteFor(VoteID, time, UserID, PostID)
+VALUES(44222, "2020.09.01", 4471, 12253);
 
 
 
-/*INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
+INSERT INTO Comment( CommentID, UserId, PostID, time, Content)
+VALUES(1, 4468, 12250, "2020.09.01", "good point!");
+
+INSERT INTO Comment( CommentID, UserId, PostID, time, Content)
+VALUES(2, 4469, 12250, "2020.09.01", "good point!");
+
+INSERT INTO Comment( CommentID, UserId, PostID, time, Content)
+VALUES(3, 4470, 12250, "22020.09.01", "good idea!");
+
+INSERT INTO Comment( CommentID, UserId, PostID, time, Content)
+VALUES(4, 4471, 12250, "2020.09.01", "good question!");
+
+INSERT INTO Comment( CommentID, UserId, PostID, time, Content)
+VALUES(5, 4472, 12250, "2020.09.01", "good discussion!");
+
+
+
+/*INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, time)
 VALUES(1,4468,1, "Hello, What other questions do you have", "18:27");
 
-INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
+INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, time)
 VALUES(2,4468,1, "Hi there", "18:29");
 
-INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
+INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, time)
 VALUES(3,4468,1, "Hi, have a Great day eve", "18:33");
 
-INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
+INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, time)
 VALUES(4,4468,1, "hello, what is wrong e", "18:44");
 
-INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
+INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, time)
 VALUES(5,4468,1, "hi, good nighte", "18:58");*/
 
-INSERT INTO ReplyTo_r1(ReplyID, Content, timee)
-VALUES(1, "Hello, What other questions do you have", "18:27");
+INSERT INTO ReplyTo_r1(ReplyID, Content, time)
+VALUES(1, "Hello, What other questions do you have", "2020.09.01");
 
-INSERT INTO ReplyTo_r1(ReplyID, Content, timee)
-VALUES(2, "Hi there", "18:29");
+INSERT INTO ReplyTo_r1(ReplyID, Content, time)
+VALUES(2, "Hi there", "2020.09.01");
 
-INSERT INTO ReplyTo_r1(ReplyID,Content, timee)
-VALUES(3,"Hi, have a Great day eve", "18:33");
+INSERT INTO ReplyTo_r1(ReplyID,Content, time)
+VALUES(3,"Hi, have a Great day eve", "2020.09.01");
 
-INSERT INTO ReplyTo_r1(ReplyID, Content, timee)
-VALUES(4,"hello, what is wrong e", "18:44");
-INSERT INTO ReplyTo_r1(ReplyID, Content, timee)
-VALUES((5, "hi, good nighte", "18:58");
+INSERT INTO ReplyTo_r1(ReplyID, Content, time)
+VALUES(4,"hello, what is wrong e", "2020.10.03");
+INSERT INTO ReplyTo_r1(ReplyID, Content, time)
+VALUES((5, "hi, good nighte", "2020.10.05");
 
 INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID,)
 VALUES(1,4468,1);
