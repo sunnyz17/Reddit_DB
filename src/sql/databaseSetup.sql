@@ -1,3 +1,4 @@
+use hey;
 CREATE TABLE User(
 	Email CHAR(20) NOT NULL,
 	Pass CHAR NOT NULL,
@@ -41,21 +42,22 @@ CREATE TABLE Post(
 );
 
 CREATE TABLE LocationOf_r1(
-	Latitude DECIMAL(8,6) NOT NULL,
-	Longitude DECIMAL(8,6) NOT NULL,
+	Latitude DECIMAL(18,4) NOT NULL,
+	Longitude DECIMAL(18,4) NOT NULL,
 
 	time CHAR(20),
-    UserID INT NOT NULL,
+    UserID integer NOT NULL,
 	PostID integer NOT NULL,
 	PRIMARY KEY (Latitude, Longitude),
     FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE,
     FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
 );
 CREATE TABLE LocationOf_r2(
-	Latitude DECIMAL(8,6) NOT NULL,
-	Longitude DECIMAL(8,6) NOT NULL,
+	Latitude DECIMAL(18,4) NOT NULL,
+	Longitude DECIMAL(18,4) NOT NULL,
 	Address CHAR(50),
-
+	UserID integer NOT NULL,
+	PostID integer NOT NULL,
 	PRIMARY KEY (Latitude, Longitude),
     FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE,
     FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
@@ -71,22 +73,16 @@ CREATE TABLE LocationOf_r2(
     FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE,
     FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
 );*/
-CREATE TABLE LocationOf_r3(
-	Latitude DECIMAL(8,6) NOT NULL,
-	Longitude DECIMAL(8,6) NOT NULL,
-	Address CHAR(50),
-	PRIMARY KEY (Latitude, Longitude),
-    FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE,
-    FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
-    )
 
-CREATE TABLE PhotoIn(
-	PhotoID integer	NOT NULL,
-	Size integer		NOT NULL,
-	Format CHAR(100)	NOT NULL,
-	PostID integer	NOT NULL,
-	PRIMARY KEY(PostID, PhotoID),
-	FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
+CREATE TABLE PhotoIn (
+    PhotoID INTEGER NOT NULL,
+    Size INTEGER NOT NULL,
+    Format CHAR(100) NOT NULL,
+    PostID INTEGER NOT NULL,
+    PRIMARY KEY (PostID , PhotoID),
+    FOREIGN KEY (PostID)
+        REFERENCES Post (PostID)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE LikedPost(
@@ -141,6 +137,8 @@ CREATE TABLE ReplyTo_r1(
 	ReplyID integer		NOT NULL,
     Content CHAR(100)		NOT NULL,
     time CHAR(20)		NOT NULL,
+	UserID integer		NOT NULL,
+    CommentID integer	NOT NULL,
     PRIMARY KEY (ReplyID),
     FOREIGN KEY (UserID) REFERENCES Post (UserID) ON DELETE CASCADE,
     FOREIGN KEY (CommentID) REFERENCES Comment (CommentID) ON DELETE CASCADE
@@ -188,54 +186,30 @@ VALUES (4471, 1111, 2);
 INSERT INTO Administrator_r1(UserID, AdminID, Admin_access_level)
 VALUES (4472, 2222, 3);*/
 INSERT INTO Administrator_r1(UserID, AdminID)
-VALUES (4468, 8888, 5);
+VALUES (4468, 8888);
 
 INSERT INTO Administrator_r1(UserID, AdminID)
-VALUES (4470, 9999, 1);
+VALUES (4470, 9999);
 
 INSERT INTO Administrator_r1(UserID, AdminID)
-VALUES (4471, 1111, 2);
+VALUES (4471, 1111);
 
 INSERT INTO Administrator_r1(UserID, AdminID)
-VALUES (4472, 2222, 3);
+VALUES (4472, 2222);
 
 INSERT INTO Administrator_r2(UserID, Admin_access_level)
-VALUES (4468, 8888, 5);
+VALUES (4468, 8888);
 
 INSERT INTO Administrator_r2(UserID, Admin_access_level)
-VALUES (4470, 9999, 1);
+VALUES (4470, 9999);
 
 INSERT INTO Administrator_r2(UserID, Admin_access_level)
-VALUES (4471, 1111, 2);
+VALUES (4471, 1111);
 
 INSERT INTO Administrator_r2(UserID, Admin_access_level)
-VALUES (4472, 2222, 3);
+VALUES (4472, 2222);
 
 -- need new insert queries for locationof Table
-INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
-VALUES (49.2606,-123.2460,"2020.09.01", 4468,12250  );
-
-INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
-VALUES (49.3029,-124.2302,"2020.09.01", 4469,12282  );
-INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
-VALUES (50.3029,-122.2302,"2020.09.01", 4470,12253  );
-INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
-VALUES (49.2397,-122.2302,"2020.09.01", 4471,12255  );
-INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
-VALUES (52.2783,-140.2312,"2020.09.01", 4472,12256 );
-
-INSERT INTO LocationOf_r2(latitude, longitude, Address)
-VALUES(49.3029,-124.2302,"UBC");
-INSERT INTO LocationOf_r2(latitude, longitude, Address)
-VALUES(49.3029,-124.2302,"Vancouver DT");
-INSERT INTO LocationOf_r2(latitude, longitude, Address)
-VALUES(50.3029,-122.2302,"Surrey");
-INSERT INTO LocationOf_r2(latitude, longitude, Address)
-VALUES(49.2397,-122.2302,"Langley");
-INSERT INTO LocationOf_r2(latitude, longitude, Address)
-VALUES(52.2783,-140.2312,"Squamish");
-
-
 INSERT INTO Post(PostID, Content, UserID, time)
 VALUES( 12250, "Trump is back",  4468, "2020.09.01");
 
@@ -250,6 +224,30 @@ VALUES( 12255, "Trump is back",  4471, "2020.12.01");
 
 INSERT INTO Post(PostID, Content, UserID, time)
 VALUES( 12256, "Trump is back",  4472, "2020.12.08");
+
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (49.2606,-123.2460,"2020.09.01", 4468,12250 );
+
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (49.3029,-124.2302,"2020.09.01", 4469,12282  );
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (50.3029,-122.2302,"2020.09.01", 4470,12253  );
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (49.2397,-122.2302,"2020.09.01", 4471,12255  );
+INSERT INTO LocationOf_r1(latitude, longitude, time, userid, postid)
+VALUES (52.2783,-140.2312,"2020.09.01", 4472,12256 );
+
+INSERT INTO LocationOf_r2(latitude, longitude, Address, userid, postid)
+VALUES(49.2606,-123.2460,"UBC", 4469,12282 );
+INSERT INTO LocationOf_r2(latitude, longitude, Address, userid, postid)
+VALUES(49.3029,-124.2302,"Vancouver DT", 4470,12253);
+INSERT INTO LocationOf_r2(latitude, longitude, Address, userid, postid)
+VALUES(50.3029,-122.2302,"Surrey", 4470,12253);
+INSERT INTO LocationOf_r2(latitude, longitude, Address, userid, postid)
+VALUES(49.2397,-122.2302,"Langley", 4471,12255);
+INSERT INTO LocationOf_r2(latitude, longitude, Address, userid, postid)
+VALUES(52.2783,-140.2312,"Squamish", 4472,12256 );
+
 
 
 -- do we really need photoIn???
@@ -342,29 +340,29 @@ VALUES(4,4468,1, "hello, what is wrong e", "18:44");
 INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, time)
 VALUES(5,4468,1, "hi, good nighte", "18:58");*/
 
-INSERT INTO ReplyTo_r1(ReplyID, Content, time)
-VALUES(1, "Hello, What other questions do you have", "2020.09.01");
+INSERT INTO ReplyTo_r1(ReplyID, Content, time, UserID, CommentID)
+VALUES(1, "Hello, What other questions do you have", "2020.09.01",4468,1);
 
-INSERT INTO ReplyTo_r1(ReplyID, Content, time)
-VALUES(2, "Hi there", "2020.09.01");
+INSERT INTO ReplyTo_r1(ReplyID, Content, time, UserID, CommentID)
+VALUES(2, "Hi there", "2020.09.01",4468,1);
 
-INSERT INTO ReplyTo_r1(ReplyID,Content, time)
-VALUES(3,"Hi, have a Great day eve", "2020.09.01");
+INSERT INTO ReplyTo_r1(ReplyID,Content, time, UserID, CommentID)
+VALUES(3,"Hi, have a Great day eve", "2020.09.01",4468,1);
 
-INSERT INTO ReplyTo_r1(ReplyID, Content, time)
-VALUES(4,"hello, what is wrong e", "2020.10.03");
-INSERT INTO ReplyTo_r1(ReplyID, Content, time)
-VALUES((5, "hi, good nighte", "2020.10.05");
+INSERT INTO ReplyTo_r1(ReplyID, Content, time, UserID, CommentID)
+VALUES(4,"hello, what is wrong e", "2020.10.03",4468,1);
+INSERT INTO ReplyTo_r1(ReplyID, Content, time, UserID, CommentID)
+VALUES(5, "hi, good nighte", "2020.10.05",4468,1);
 
-INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID,)
+INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID)
 VALUES(1,4468,1);
-INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID,)
+INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID)
 VALUES(2,4468,1);
-INSERT INTO ReplyTo_r2(ReplyID,UserID, CommentID,)
+INSERT INTO ReplyTo_r2(ReplyID,UserID, CommentID)
 VALUES(3,4468,1);
-INSERT INTO ReplyTo_r2(ReplyID,UserID, CommentID,)
+INSERT INTO ReplyTo_r2(ReplyID,UserID, CommentID)
 VALUES(4,4468,1);
-INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID,)
+INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID)
 VALUES(5,4468,1);
 
 
