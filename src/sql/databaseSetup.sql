@@ -144,7 +144,8 @@ CREATE TABLE ReplyTo_r1(
     PRIMARY KEY (ReplyID),
     FOREIGN KEY (UserID) REFERENCES Post (UserID) ON DELETE CASCADE,
     FOREIGN KEY (CommentID) REFERENCES Comment (CommentID) ON DELETE CASCADE
-);CREATE TABLE ReplyTo_r2(
+);
+CREATE TABLE ReplyTo_r2(
 	ReplyID integer		NOT NULL,
     UserID integer		NOT NULL,
     CommentID integer	NOT NULL,
@@ -212,7 +213,28 @@ VALUES (4472, 2222, 3);
 
 -- need new insert queries for locationof Table
 INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
-VALUES (49.2606,-123.2460,  )
+VALUES (49.2606,-123.2460,"13:20", 4468,12250  );
+
+INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
+VALUES (49.3029,-124.2302,"13:20", 4469,12282  );
+INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
+VALUES (50.3029,-122.2302,"13:20", 4470,12253  );
+INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
+VALUES (49.2397,-122.2302,"13:20", 4471,12255  );
+INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
+VALUES (52.2783,-140.2312,"13:20", 4472,12256 );
+
+INSERT INTO LocationOf_r2(latitude, longitude, Address)
+VALUES(49.3029,-124.2302,"UBC");
+INSERT INTO LocationOf_r2(latitude, longitude, Address)
+VALUES(49.3029,-124.2302,"Vancouver DT");
+INSERT INTO LocationOf_r2(latitude, longitude, Address)
+VALUES(50.3029,-122.2302,"Surrey");
+INSERT INTO LocationOf_r2(latitude, longitude, Address)
+VALUES(49.2397,-122.2302,"Langley");
+INSERT INTO LocationOf_r2(latitude, longitude, Address)
+VALUES(52.2783,-140.2312,"Squamish");
+
 
 INSERT INTO Post(PostID, Content, UserID, timee)
 VALUES( 12250, "Trump is back",  4468, "13:20");
@@ -305,7 +327,7 @@ VALUES(5, 4472, 12250, "19:52", "good discussion!");
 
 
 
-INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
+/*INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
 VALUES(1,4468,1, "Hello, What other questions do you have", "18:27");
 
 INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
@@ -318,5 +340,32 @@ INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
 VALUES(4,4468,1, "hello, what is wrong e", "18:44");
 
 INSERT INTO ReplyTo(ReplyID, UserID, CommentID, Content, timee)
-VALUES(5,4468,1, "hi, good nighte", "18:58");
+VALUES(5,4468,1, "hi, good nighte", "18:58");*/
+
+INSERT INTO ReplyTo_r1(ReplyID, Content, timee)
+VALUES(1, "Hello, What other questions do you have", "18:27");
+
+INSERT INTO ReplyTo_r1(ReplyID, Content, timee)
+VALUES(2, "Hi there", "18:29");
+
+INSERT INTO ReplyTo_r1(ReplyID,Content, timee)
+VALUES(3,"Hi, have a Great day eve", "18:33");
+
+INSERT INTO ReplyTo_r1(ReplyID, Content, timee)
+VALUES(4,"hello, what is wrong e", "18:44");
+INSERT INTO ReplyTo_r1(ReplyID, Content, timee)
+VALUES((5, "hi, good nighte", "18:58");
+
+INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID,)
+VALUES(1,4468,1);
+INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID,)
+VALUES(2,4468,1);
+INSERT INTO ReplyTo_r2(ReplyID,UserID, CommentID,)
+VALUES(3,4468,1);
+INSERT INTO ReplyTo_r2(ReplyID,UserID, CommentID,)
+VALUES(4,4468,1);
+INSERT INTO ReplyTo_r2(ReplyID, UserID, CommentID,)
+VALUES(5,4468,1);
+
+
 
