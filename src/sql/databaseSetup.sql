@@ -7,10 +7,26 @@ CREATE TABLE User(
 	PRIMARY KEY (UserID) 
 );
 
-CREATE TABLE Administrator(
-	Admin_access_level integer,
+
+/*CREATE TABLE Administrator(
+
 	UserID integer NOT NULL,
 	AdminID CHAR(10) NOT NULL,
+	Admin_access_level integer,
+	PRIMARY KEY (UserID),
+	FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE
+);*/
+CREATE TABLE Administrator_r1(
+
+	UserID integer NOT NULL,
+	AdminID CHAR(10) NOT NULL,
+	PRIMARY KEY (UserID),
+	FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE
+);
+CREATE TABLE Administrator_r2(
+	Admin_access_level integer,
+	UserID integer NOT NULL,
+
 	PRIMARY KEY (UserID),
 	FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE
 );
@@ -24,7 +40,27 @@ CREATE TABLE Post(
 	FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE
 );
 
-CREATE TABLE LocationOf(
+CREATE TABLE LocationOf_r1(
+	Latitude DECIMAL(8,6) NOT NULL,
+	Longitude DECIMAL(8,6) NOT NULL,
+
+	timee CHAR(20),
+    UserID INT NOT NULL,
+	PostID integer NOT NULL,
+	PRIMARY KEY (Latitude, Longitude),
+    FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE,
+    FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
+);
+CREATE TABLE LocationOf_r2(
+	Latitude DECIMAL(8,6) NOT NULL,
+	Longitude DECIMAL(8,6) NOT NULL,
+	Address CHAR(50),
+
+	PRIMARY KEY (Latitude, Longitude),
+    FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE,
+    FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
+);
+/*CREATE TABLE LocationOf(
 	Latitude DECIMAL(8,6) NOT NULL,
 	Longitude DECIMAL(8,6) NOT NULL,
 	Address CHAR(50),
@@ -34,7 +70,15 @@ CREATE TABLE LocationOf(
 	PRIMARY KEY (Latitude, Longitude),
     FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE,
     FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
-);
+);*/
+CREATE TABLE LocationOf_r3(
+	Latitude DECIMAL(8,6) NOT NULL,
+	Longitude DECIMAL(8,6) NOT NULL,
+	Address CHAR(50),
+	PRIMARY KEY (Latitude, Longitude),
+    FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE,
+    FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
+    )
 
 CREATE TABLE PhotoIn(
 	PhotoID integer	NOT NULL,
@@ -82,7 +126,7 @@ CREATE TABLE Comment(
     FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
 );
 
-CREATE TABLE ReplyTo(
+/*CREATE TABLE ReplyTo(
 	ReplyID integer		NOT NULL, 
     UserID integer		NOT NULL, 
     CommentID integer	NOT NULL, 
@@ -91,7 +135,27 @@ CREATE TABLE ReplyTo(
     PRIMARY KEY (ReplyID),
     FOREIGN KEY (UserID) REFERENCES Post (UserID) ON DELETE CASCADE,
     FOREIGN KEY (CommentID) REFERENCES Comment (CommentID) ON DELETE CASCADE
+);*/
+
+CREATE TABLE ReplyTo_r1(
+	ReplyID integer		NOT NULL,
+    Content CHAR(100)		NOT NULL,
+    timee CHAR(20)		NOT NULL,
+    PRIMARY KEY (ReplyID),
+    FOREIGN KEY (UserID) REFERENCES Post (UserID) ON DELETE CASCADE,
+    FOREIGN KEY (CommentID) REFERENCES Comment (CommentID) ON DELETE CASCADE
+);CREATE TABLE ReplyTo_r2(
+	ReplyID integer		NOT NULL,
+    UserID integer		NOT NULL,
+    CommentID integer	NOT NULL,
+
+    PRIMARY KEY (ReplyID),
+    FOREIGN KEY (UserID) REFERENCES Post (UserID) ON DELETE CASCADE,
+    FOREIGN KEY (CommentID) REFERENCES Comment (CommentID) ON DELETE CASCADE
 );
+
+
+
 
 INSERT INTO User(Email, Pass, Karma, UserID, Username)
 VALUES ("qwer@hotmail.com", "1", 10, 4468, "Potatoman");
@@ -111,20 +175,44 @@ VALUES ("holy@hotmail.com", "q", 5081, 4472, "Kevind");
 
 
 
-INSERT INTO Administrator(UserID, AdminID, Admin_access_level)
+/*INSERT INTO Administrator_r1(UserID, AdminID, Admin_access_level)
 VALUES (4468, 8888, 5);
 
-INSERT INTO Administrator(UserID, AdminID, Admin_access_level)
+INSERT INTO Administrator_r1(UserID, AdminID, Admin_access_level)
 VALUES (4470, 9999, 1);
 
-INSERT INTO Administrator(UserID, AdminID, Admin_access_level)
+INSERT INTO Administrator_r1(UserID, AdminID, Admin_access_level)
 VALUES (4471, 1111, 2);
 
-INSERT INTO Administrator(UserID, AdminID, Admin_access_level)
+INSERT INTO Administrator_r1(UserID, AdminID, Admin_access_level)
+VALUES (4472, 2222, 3);*/
+INSERT INTO Administrator_r1(UserID, AdminID)
+VALUES (4468, 8888, 5);
+
+INSERT INTO Administrator_r1(UserID, AdminID)
+VALUES (4470, 9999, 1);
+
+INSERT INTO Administrator_r1(UserID, AdminID)
+VALUES (4471, 1111, 2);
+
+INSERT INTO Administrator_r1(UserID, AdminID)
+VALUES (4472, 2222, 3);
+
+INSERT INTO Administrator_r2(UserID, Admin_access_level)
+VALUES (4468, 8888, 5);
+
+INSERT INTO Administrator_r2(UserID, Admin_access_level)
+VALUES (4470, 9999, 1);
+
+INSERT INTO Administrator_r2(UserID, Admin_access_level)
+VALUES (4471, 1111, 2);
+
+INSERT INTO Administrator_r2(UserID, Admin_access_level)
 VALUES (4472, 2222, 3);
 
 -- need new insert queries for locationof Table
-
+INSERT INTO LocationOf_r1(latitude, longitude, timee, userid, postid)
+VALUES (49.2606,-123.2460,  )
 
 INSERT INTO Post(PostID, Content, UserID, timee)
 VALUES( 12250, "Trump is back",  4468, "13:20");
