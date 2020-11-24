@@ -232,7 +232,7 @@ public class DatabaseHandler{
 
         //selects all the posts in the database
         public String[] selectPostByUser(String Username){
-            ArrayList<String[]> result = new ArrayList<String[]>();
+            ArrayList<String> result = new ArrayList<String>();
             String[] add = new String[3];
 
             Connection conn = null;
@@ -257,13 +257,14 @@ public class DatabaseHandler{
                         System.out.println("The Posts by " + Username + " selected are:");
 
                         while(rset.next()){
-                            System.out.println("user post " + rowCount + rset.getString("Content")); 
+                            
 
                             add[0] = Integer.toString(rset.getInt("PostID"));
                             add[1] = rset.getString("Content");
                             add[2] = Integer.toString(rset.getInt("UserID"));
-
-                            result.add(add);
+                            System.out.println(add[0] + "  " + add[1] + "  " + add[2]);
+                            String output = add[0] + "  " + add[1] + "  " + add[2];
+                            result.add(output);
                         }
                     }
                     ps.close();
@@ -493,7 +494,7 @@ public class DatabaseHandler{
         }
 
         public String[] postPerDay(){
-            ArrayList<String[]> result = new ArrayList<String[]>();
+            ArrayList<String> result = new ArrayList<String>();
             Connection conn = null;
             String[] add = new String[2];
             try{
@@ -520,7 +521,9 @@ public class DatabaseHandler{
                         
                         add[0] = rset.getString("Time");
                         add[1] = Integer.toString(rset.getInt("Count"));
-                        result.add(add);
+                        System.out.println("Time and post per day count is: " + add[0] + "  " + add[1]);
+                        String output = add[0] + "  " + add[1];
+                        result.add(output);
                     }
                 }
 
