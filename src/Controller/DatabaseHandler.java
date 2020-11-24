@@ -476,7 +476,7 @@ public class DatabaseHandler implements TransactionsDelegate{
             
                 //INSERT SQL SELECT STATEMENT HERE
                 
-                PreparedStatement ps = connection.prepareStatement( "Select TopicID, p.Content, Time From Post p, TrendingTopic Where Time LIKE ? Group By TopicID Having COUNT(*)>2 Order by  COUNT(*) DESC");
+                PreparedStatement ps = connection.prepareStatement( "Select TopicID, p.Content, Time From Post p, TrendingTopic Where Time = ? Group By TopicID Having COUNT(*)>2 Order by  COUNT(*) DESC");
                 ps.setString(1, time);
 
                 ResultSet rset = ps.executeQuery();
