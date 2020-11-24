@@ -18,7 +18,11 @@ import src.Model.TrendingTopicModel;
 import src.Model.UserModel;
 
 import src.delegates.*;
-public class DatabaseHandler{
+import src.ui.MainPage;
+
+import javax.swing.*;
+
+public class DatabaseHandler implements TransactionsDelegate{
 
 	private static final String EXCEPTION_TAG = "[EXCEPTION]";
 	//private static final String WARNING_TAG = "[WARNING]";
@@ -38,47 +42,60 @@ public class DatabaseHandler{
     static final String PASS = "123123";
 
 
-        public DatabaseHandler(){
 
-                Connection conn = null;
-                Statement stmt = null;
-                try{
-                    //STEP 2: Register JDBC driver
-                    Class.forName("com.mysql.jdbc.Driver");
+    private void start(){
 
-                    // Open a connection
-                    System.out.println("Connecting to database...");
-                    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        JFrame frame = new JFrame("MainPage");
+        frame.setContentPane(new MainPage(this).cs304);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
 
-                    //STEP 4: Execute a query
-                    // System.out.println("Creating database...");
-                    // stmt = conn.createStatement();
+    public static void main (String args[]){
 
-                    // String sql = "CREATE DATABASE STUDENTS";
-                    // stmt.executeUpdate(sql);
-                    System.out.println("Database created successfully...");
-                }catch(SQLException se){
-                    //Handle errors for JDBC
-                    se.printStackTrace();
-                }catch(Exception e){
-                    //Handle errors for Class.forName
-                    e.printStackTrace();
-                }finally{
-                    //finally block used to close resources
-                    try{
-                        if(stmt!=null)
-                            stmt.close();
-                    }catch(SQLException se2){
-                    }// nothing we can do
-                    try{
-                        if(conn !=null)
-                            conn.close();
-                    }catch(SQLException se){
-                        se.printStackTrace();
-                    }//end finally try
-                }//end try
-                System.out.println("Goodbye!");
-            }
+        Connection conn = null;
+        Statement stmt = null;
+        try{
+            //STEP 2: Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Open a connection
+            System.out.println("Connecting to database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            //STEP 4: Execute a query
+            // System.out.println("Creating database...");
+            // stmt = conn.createStatement();
+
+            // String sql = "CREATE DATABASE STUDENTS";
+            // stmt.executeUpdate(sql);
+            System.out.println("Database created successfully...");
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        }finally{
+            //finally block used to close resources
+            try{
+                if(stmt!=null)
+                    stmt.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+            try{
+                if(conn !=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end finally try
+        }//end try
+        System.out.println("Goodbye!");
+
+        DatabaseHandler slappa  = new DatabaseHandler();
+        slappa.start();
+    }
 
         
         public void closeDB() {
@@ -100,7 +117,7 @@ public class DatabaseHandler{
         }
 
         //deletes all posts with ID
-        public void deletePost(int PostID){
+        public void deleteUser(int userID){
             Connection conn = null;
 
             try{
@@ -110,14 +127,14 @@ public class DatabaseHandler{
                 System.out.println("Connecting to database...");
                 conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-                PreparedStatement ps = conn.prepareStatement("DELETE FROM Post WHERE PostID = ?");
-                ps.setInt(1, PostID);
+                PreparedStatement ps = conn.prepareStatement("DELETE FROM User WHERE userID = ?");
+                ps.setInt(1, userID);
                 int rowCount = ps.executeUpdate();
                 if (rowCount == 0) {
-                    System.out.println(" Post with PostID: " + PostID + " does not exist!");
+                    System.out.println(" Post with PostID: " + userID + " does not exist!");
                 }
                 
-                conn.commit();
+                //conn.commit();
                 ps.close();
             
 
@@ -133,7 +150,7 @@ public class DatabaseHandler{
             }catch(SQLException se){
                 se.printStackTrace();
             }//end try
-            System.out.println("FINISHED DELETING POST WITH ID" + PostID);
+            System.out.println("FINISHED DELETING Topic: " + userID);
         }
 
         //updates specific userID with new Username
@@ -156,7 +173,7 @@ public class DatabaseHandler{
                     System.out.println(" User with UserID: " + UserID + " does not exist!");
                 }
                 
-                conn.commit();
+                //conn.commit();
                 ps.close();
             
             }catch(SQLException ex){
@@ -196,14 +213,14 @@ public class DatabaseHandler{
                     ps.setBigDecimal(2, Longitude);
 
                     ResultSet rset = ps.executeQuery();
-                    int rowCount = ps.executeUpdate();
-                    if (rowCount == 0) {
+                    //int rowCount = ps.executeUpdate();
+                    if (rset == null) {
                         System.out.println(" Coordinates with :  " + Latitude + ", " + Longitude + "does not exist!");
                     }else{
                         System.out.println("The Posts by " + Latitude + ", " + Longitude + "selected are:");
 
                         while(rset.next()){
-                            System.out.println("user post " + rowCount + rset.getString("Content"));
+                            System.out.println("user post "  + rset.getString("Content"));
                             result.add(rset.getString("Content"));
                         }
                     }
@@ -246,12 +263,12 @@ public class DatabaseHandler{
                     connection = DriverManager.getConnection(DB_URL, USER, PASS);
                 
                     //INSERT SQL SELECT STATEMENT HERE
-                    PreparedStatement ps = connection.prepareStatement( "SELECT PostID, Content, p.UserID FROM Post p, User u WHERE p.UserID = p.UserID AND u.username = ?");
+                    PreparedStatement ps = connection.prepareStatement( "SELECT PostID, Content, p.UserID FROM Post p, User u WHERE p.UserID = u.UserID AND u.username = ?");
                     ps.setString(1, Username);
 
                     ResultSet rset = ps.executeQuery();
-                    int rowCount = ps.executeUpdate();
-                    if (rowCount == 0) {
+                    //int rowCount = ps.executeUpdate();
+                    if (rset == null) {
                         System.out.println(" Username:  " + Username + " does not exist!");
                     }else{
                         System.out.println("The Posts by " + Username + " selected are:");
@@ -305,15 +322,15 @@ public class DatabaseHandler{
                     ps.setString(1, Trending);
 
                     ResultSet rset = ps.executeQuery();
-                    int rowCount = ps.executeUpdate();
-                    if (rowCount == 0) {
+                    //int rowCount = ps.executeUpdate();
+                    if (rset == null) {
                         System.out.println(" TrendingTopic:  " + Trending + " does not exist!");
                     }else{
                         System.out.println("The Posts by " + Trending + " selected are:");
 
                         while(rset.next()){
-                            System.out.println("user post " + rowCount + rset.getString("Content"));
-                            result = rset.getString("Content");
+                            System.out.println(rset.getString("Content"));
+                            result += rset.getString("Content") + "\n";
                         }
                     }
 
@@ -373,7 +390,7 @@ public class DatabaseHandler{
         }
 
 
-        //inserts a user with parameters specified by a user
+    //inserts a user with parameters specified by a user
         public void insertUser(UserModel model){
             Connection conn = null;
             try{
@@ -387,9 +404,9 @@ public class DatabaseHandler{
 
                     ps.setString(1, model.getemail());
                     ps.setString(2, model.getPass());
-                    ps.setString(3, model.getUsername());
+                    ps.setString(5, model.getUsername());
                     ps.setInt(4, model.getUserID());
-                    ps.setInt(5, model.getKarma());
+                    ps.setInt(3, model.getKarma());
 
                     ps.executeUpdate();
 
@@ -419,7 +436,7 @@ public class DatabaseHandler{
                     System.out.println("Connecting to database...");
                     conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-                    PreparedStatement ps = conn.prepareStatement("INSERT INTO Comment VALUES (?,?,?,?)");
+                    PreparedStatement ps = conn.prepareStatement("INSERT INTO Comment VALUES (?,?,?,?,?)");
 
                     ps.setInt(1, model.getCommentID());
                     ps.setInt(2, model.getUserID());
@@ -458,19 +475,22 @@ public class DatabaseHandler{
             
             
                 //INSERT SQL SELECT STATEMENT HERE
-                PreparedStatement ps = connection.prepareStatement( "SELECT Content FROM TrendingTopic WHERE time = ?");
+                
+                PreparedStatement ps = connection.prepareStatement( "Select TopicID, p.Content, Time From Post p, TrendingTopic Where Time LIKE ? Group By TopicID Having COUNT(*)>2 Order by  COUNT(*) DESC");
                 ps.setString(1, time);
 
                 ResultSet rset = ps.executeQuery();
-                int rowCount = ps.executeUpdate();
-                if (rowCount == 0) {
+                //int rowCount = ps.executeUpdate();
+                if (rset == null) {
                     System.out.println(" TrendingTopic with " + time + " does not exist!");
                 }else{
-                    System.out.println("The trendingtopic post on " + time + " selected are:");
-
+                    System.out.println("The trendingtopic on " + time + " selected are:");
+//                    if(!rset.next()){
+//                        System.out.println("ERROR, selected query does not return anything");
+//                    }
                     while(rset.next()){
-                        System.out.println("TrendingTopic post  " + rowCount + rset.getString("Content"));
-                        result.add(rset.getString("Content"));
+                        System.out.println(rset.getString("TopicID"));
+                        result.add(rset.getString("TopicID"));
                     }
                 }
 
@@ -507,12 +527,12 @@ public class DatabaseHandler{
             
             
                 //INSERT SQL SELECT STATEMENT HERE
-                PreparedStatement ps = connection.prepareStatement( "Select Time, count(*) From VoteFor Group By Time;");
+                PreparedStatement ps = connection.prepareStatement( "Select Time, count(*) FROM Post Group By Time;");
                 
 
                 ResultSet rset = ps.executeQuery();
-                int rowCount = ps.executeUpdate();
-                if (rowCount == 0) {
+
+                if (rset == null) {
                     System.out.println(" Date does not exist!");
                 }else{
                     System.out.println("The posts selected are:");
@@ -520,7 +540,7 @@ public class DatabaseHandler{
                     while(rset.next()){
                         
                         add[0] = rset.getString("Time");
-                        add[1] = Integer.toString(rset.getInt("Count"));
+                        add[1] = Integer.toString(rset.getInt("count(*)"));
                         System.out.println("Time and post per day count is: " + add[0] + "  " + add[1]);
                         String output = add[0] + "  " + add[1];
                         result.add(output);
@@ -609,9 +629,14 @@ public class DatabaseHandler{
             String strSelect = "SELECT MAX(CommentCount.c) FROM (SELECT Count(*) c From Comment Group By PostID) As CommentCount";
             ResultSet rset = stmt.executeQuery(strSelect);
     
+            if(rset == null){
+                System.out.println("comment count not found!");
+            }
+            while(rset.next()){
+                maxCom= rset.getInt("MAX(CommentCount.c)");
+                System.out.println("MaxComment# " +maxCom + "\n");
+            }
 
-            maxCom= rset.getInt("maxCom");
-            System.out.println("MaxComment# " +maxCom + "\n");
     
             }catch(SQLException ex){
             ex.printStackTrace();
@@ -628,7 +653,8 @@ public class DatabaseHandler{
             return maxCom;
             }
 
-            public String[] UserInAllVote(){
+
+    public String[] UserinAllVotes(){
                 ArrayList<String> result = new ArrayList<String>();
                 Connection conn = null;
                 Statement stmt = null;
@@ -648,7 +674,7 @@ public class DatabaseHandler{
         
                 while(rset.next()){
                 String Username = rset.getString("Username");
-                System.out.println("User: " + rowCount + " " + Username + "\n");
+                System.out.println("The user that participates in all votes" + Username + "\n");
                 result.add(Username);
                 ++rowCount;
                 }

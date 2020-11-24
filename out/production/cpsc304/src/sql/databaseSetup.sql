@@ -1,7 +1,7 @@
-use heey;
+
 CREATE TABLE User(
 	Email CHAR(20) NOT NULL,
-	Pass CHAR NOT NULL,
+	Pass CHAR(20) NOT NULL,
 	Karma integer,
 	UserID integer NOT NULL,
 	Username CHAR(10) NOT NULL,
@@ -97,8 +97,8 @@ CREATE TABLE TrendingTopic(
 	TopicID CHAR(50)	NOT NULL, 
     Content text NOT NULL, 
     PostID integer	NOT NULL,
-    PRIMARY KEY (TopicID),
-	FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE NO ACTION
+    PRIMARY KEY (PostID),
+	FOREIGN KEY (PostID) REFERENCES Post (PostID) ON DELETE CASCADE
 );
 
 CREATE TABLE VoteFor(
@@ -157,19 +157,19 @@ CREATE TABLE ReplyTo_r2(
 
 
 INSERT INTO User(Email, Pass, Karma, UserID, Username)
-VALUES ("qwer@hotmail.com", "1", 10, 4468, "Potatoman");
+VALUES ("qwer@hotmail.com", "123123", 10, 4468, "Potatoman");
 
 INSERT INTO User(Email, Pass, Karma, UserID, Username)
-VALUES ("myname@hotmail.com", "q", 50, 4469, "KateGoWild");
+VALUES ("myname@hotmail.com", "qqqwww", 50, 4469, "KateGoWild");
 
 INSERT INTO User(Email, Pass, Karma, UserID, Username)
-VALUES ("kas@hotmail.com", "q", 10, 4470, "Kassiod");
+VALUES ("kas@hotmail.com", "qweqwe", 10, 4470, "Kassiod");
 
 INSERT INTO User(Email, Pass, Karma, UserID, Username)
-VALUES ("DavidS@hotmail.com", "q", 7856, 4471, "Kake");
+VALUES ("DavidS@hotmail.com", "qweqwe", 7856, 4471, "Kake");
 
 INSERT INTO User(Email, Pass, Karma, UserID, Username)
-VALUES ("holy@hotmail.com", "q", 5081, 4472, "Kevind");
+VALUES ("holy@hotmail.com", "qweqwe", 5081, 4472, "Kevind");
 
 
 
@@ -211,16 +211,16 @@ VALUES (4472, 2222);
 
 -- need new insert queries for locationof Table
 INSERT INTO Post(PostID, Content, UserID, time)
-VALUES( 12250, "Trump is back",  4468, "2020.09.01");
+VALUES( 12250, "Lakers 2020 champions, will they win again next season",  4468, "2020.09.01");
 
 INSERT INTO Post(PostID, Content, UserID, time)
-VALUES( 12282, "THello Worldk",  4469, "2020.10.01");
+VALUES( 12282, "How to use hashmap in java",  4469, "2020.10.01");
 
 INSERT INTO Post(PostID, Content, UserID, time)
-VALUES( 12253, "Trump is back",  4470, "2020.09.05");
+VALUES( 12253, "Hello World",  4470, "2020.09.05");
 
 INSERT INTO Post(PostID, Content, UserID, time)
-VALUES( 12255, "Trump is back",  4471, "2020.12.01");
+VALUES( 12255, "Bullish market 2020",  4471, "2020.12.01");
 
 INSERT INTO Post(PostID, Content, UserID, time)
 VALUES( 12256, "Trump is back",  4472, "2020.12.08");
@@ -287,14 +287,20 @@ VALUES( 12256, FALSE, 23334);
 INSERT INTO TrendingTopic(TopicID, Content, PostID)
 VALUES("Sport", "Lakers 2020 champions, will they win again next season", 12250);
 
-INSERT INTO TrendingTopic(TopicID, Content, PostID)
-VALUES("Random", "Hello World", 12250);
+INSERT INTO Post(PostID, Content, UserID, time)
+VALUES( 10, "The number one draft pick",  4468, "2020.09.01");
 
 INSERT INTO TrendingTopic(TopicID, Content, PostID)
-VALUES("Economic", "Bullish market 2020", 12250);
+VALUES("Sport", "The number one draft pick", 10);
 
 INSERT INTO TrendingTopic(TopicID, Content, PostID)
-VALUES("Coding", "How to use hashmap in java", 12250);
+VALUES("Random", "Hello World", 12253);
+
+INSERT INTO TrendingTopic(TopicID, Content, PostID)
+VALUES("Economic", "Bullish market 2020", 12255);
+
+INSERT INTO TrendingTopic(TopicID, Content, PostID)
+VALUES("Coding", "How to use hashmap in java", 12282);
 
 
 INSERT INTO VoteFor(VoteID, time, UserID, PostID)

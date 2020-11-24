@@ -14,13 +14,12 @@ import java.math.BigDecimal;
  * Bank is the actual class that will implement the methods.
  */
 public interface TransactionsDelegate {
-	public void databaseSetup();
 
 	public void insertUser(UserModel model);
 	public void insertPost(PostModel model);
 	public void insertComment(CommentModel model);
 
-	public void deletePost(int PostID);
+	public void deleteUser(int userID);
 	public void updateUserName(int UserID, String Username);
 
 	public String[] selectPostByLocation(BigDecimal Latitude, BigDecimal Longitude);

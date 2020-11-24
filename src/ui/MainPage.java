@@ -58,15 +58,15 @@ public class MainPage {
 
     private TransactionsDelegate delegate = null;
 
-    public static void main(String[] args) {
+    public static void main(String[] args, TransactionsDelegate delegate) {
         JFrame frame = new JFrame("MainPage");
-        frame.setContentPane(new MainPage().cs304);
+        frame.setContentPane(new MainPage(delegate).cs304);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
-    public MainPage() {
+    public MainPage(TransactionsDelegate delegate) {
         this.delegate = delegate;
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -75,7 +75,7 @@ public class MainPage {
                 int UserID = rand.nextInt(10000);
                 String Username = textField1.getText();
                 String Email = textField2.getText();
-                String Pass = passwordField1.getPassword().toString();
+                String Pass = String.valueOf(passwordField1.getPassword());
                 int Karma = 0;
                 UserModel model = new UserModel(Email,
                         Pass,
@@ -202,8 +202,8 @@ public class MainPage {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int PostID = Integer.parseInt(textField3.getText());
-                delegate.deletePost(PostID);
+                int userID = Integer.parseInt(textField3.getText());
+                delegate.deleteUser(userID);
             }
         });
     }
