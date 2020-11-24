@@ -590,6 +590,83 @@ public class DatabaseHandler{
         }
 
 
+        public int highestCommentNumber(){
+            int maxCom = 0;
+            Connection conn = null;
+            Statement stmt = null;
+            try{
+            Class.forName("com.mysql.jdbc.Driver");
+    
+            //Open a connection
+            System.out.println("Connecting to database...");
+            System.out.println("Selecting all Usernames");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+    
+            String strSelect = "SELECT MAX(CommentCount.c) FROM (SELECT Count(*) c From Comment Group By PostID) As CommentCount";
+            ResultSet rset = stmt.executeQuery(strSelect);
+    
+
+            maxCom= rset.getInt("maxCom");
+            System.out.println("MaxComment# " +maxCom + "\n");
+    
+            }catch(SQLException ex){
+            ex.printStackTrace();
+            rollbackConnection();
+            }catch(Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+            }try{
+            if(conn!=null)
+            conn.close();
+            }catch(SQLException se){
+            se.printStackTrace();
+            }//end try
+            return maxCom;
+            }
+
+            public String[] UserInAllVote(){
+                ArrayList<String> result = new ArrayList<String>();
+                Connection conn = null;
+                Statement stmt = null;
+                try{
+                Class.forName("com.mysql.jdbc.Driver");
+        
+                //Open a connection
+                System.out.println("Connecting to database...");
+                System.out.println("Selecting all Usernames");
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                stmt = conn.createStatement();
+        
+        
+                String strSelect = " SELECT username FROM User u WHERE  not EXISTS (\tSELECT c.UserID FROM VoteFor c Where c.UserID NOT in( SELECT UserID FROM User WHERE userid=u.userid))";
+                ResultSet rset = stmt.executeQuery(strSelect);
+                int rowCount = 0;
+        
+                while(rset.next()){
+                String Username = rset.getString("Username");
+                System.out.println("User: " + rowCount + " " + Username + "\n");
+                result.add(Username);
+                ++rowCount;
+                }
+        
+        
+                }catch(SQLException ex){
+                ex.printStackTrace();
+                rollbackConnection();
+                }catch(Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+                }try{
+                if(conn!=null)
+                conn.close();
+                }catch(SQLException se){
+                se.printStackTrace();
+                }//end try
+                return result.toArray(new String[result.size()]);
+                }
+        
+
 
 
     }
