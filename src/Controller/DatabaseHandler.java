@@ -527,7 +527,7 @@ public class DatabaseHandler implements TransactionsDelegate{
             
             
                 //INSERT SQL SELECT STATEMENT HERE
-                PreparedStatement ps = connection.prepareStatement( "Select Time, count(*) FROM Post Group By Time;");
+                PreparedStatement ps = connection.prepareStatement( "Select Time, count(*) FROM Post Group By Time");
                 
 
                 ResultSet rset = ps.executeQuery();
