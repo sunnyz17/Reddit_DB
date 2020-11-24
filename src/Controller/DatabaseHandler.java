@@ -175,6 +175,9 @@ public class DatabaseHandler{
 
         }
 
+
+        //TODO: 
+        //FIX THE QUERY
         public String[] selectPostByLocation(BigDecimal Latitude, BigDecimal Longitude){
             ArrayList<String> result = new ArrayList<String>();
             Connection conn = null;
@@ -188,7 +191,7 @@ public class DatabaseHandler{
                     connection = DriverManager.getConnection(DB_URL, USER, PASS);
                 
                     //INSERT SQL SELECT STATEMENT HERE
-                    PreparedStatement ps = connection.prepareStatement( "SELECT post FROM locationOf");
+                    PreparedStatement ps = connection.prepareStatement( "SELECT Content FROM LocationOf_r1 l, post p WHERE l.latitude = ? AND l.longitude = ? AND l.PostID = p.PostID");
                     ps.setBigDecimal(1, Latitude);
                     ps.setBigDecimal(2, Longitude);
 
