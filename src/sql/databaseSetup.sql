@@ -1,4 +1,4 @@
-use hey;
+use heey;
 CREATE TABLE User(
 	Email CHAR(20) NOT NULL,
 	Pass CHAR NOT NULL,
