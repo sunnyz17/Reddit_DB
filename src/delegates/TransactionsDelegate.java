@@ -1,6 +1,7 @@
-package ca.ubc.cs304.delegates;
+package src.delegates;
 
-import ca.ubc.cs304.model.*;
+import src.Controller.*;
+import src.Model.*;
 
 /**
  * This interface uses the delegation design pattern where instead of having
@@ -11,21 +12,25 @@ import ca.ubc.cs304.model.*;
  * TerminalTransactions calls the methods that we have listed below but 
  * Bank is the actual class that will implement the methods.
  */
-public interface TerminalTransactionsDelegate {
+public interface TransactionsDelegate {
 	public void databaseSetup();
 	
-	public void deleteBranch(int branchId);
-	public void insertBranch(BranchModel model);
+	
 
 	public void insertUser(UserModel model);
 	public void insertPost(PostModel model);
-	public void insertAdmin1(AdministratorModel_r1 model);
-	public void insertAdmin2(AdministratorModel_r2 model);
 	public void insertComment(CommentModel model);
-	public void insertVote(LikedPostModel model);
-
-	public void showBranch();
-	public void updateBranch(int branchId, String name);
 	
-	public void terminalTransactionsFinished();
+	public void deletePost(int PostID);
+
+	public String[] selectPostofUser(String Username);
+	public String[] selectUsername();
+
+	//need fixes still
+
+	public void selectCoordofAllPosts();
+
+
+	
+	
 }
