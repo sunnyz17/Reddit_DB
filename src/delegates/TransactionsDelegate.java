@@ -24,10 +24,10 @@ public interface TransactionsDelegate {
 	public void updateUserName(int UserID, String Username);
 
 	public String[] selectPostByLocation(BigDecimal Latitude, BigDecimal Longitude);
-	public String[] selectPostByUser(String Username);
+	public String[] selectPostByUser(String Username); //array of array 
 	public String selectPostofTrendingTopic(String Trending);
-	public String[] findTopicWithPostsOnDate(String time);
-	public String[] postPerDay();
-	public String[] highestReplyNumber();
-	public String[] topicInAllPosts();
+	public String[] selectTopicWithPostsOnDate(String time);
+	public String[] postPerDay(); //array of array
+	public int highestCommentNumber();
+	public String[] UserinAllVotes();
 }

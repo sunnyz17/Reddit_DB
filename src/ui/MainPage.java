@@ -2,6 +2,7 @@ package src.ui;
 
 import src.Model.*;
 import src.Controller.*;
+import src.delegates.*;
 
 
 import javax.swing.*;
@@ -54,7 +55,7 @@ public class MainPage {
     private JTextField textField4;
     private JButton updateButton;
 
-    private TerminalTransactionsDelegate delegate = null;
+    private TransactionsDelegate delegate = null;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainPage");
