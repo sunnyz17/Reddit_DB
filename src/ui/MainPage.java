@@ -49,6 +49,10 @@ public class MainPage {
     private JTextPane textPane6;
     private JButton getButton6;
     private JTextPane textPane7;
+    private JTextField textField3;
+    private JButton deleteButton;
+    private JTextField textField4;
+    private JButton updateButton;
 
     private TerminalTransactionsDelegate delegate = null;
 
@@ -117,43 +121,96 @@ public class MainPage {
             public void actionPerformed(ActionEvent e) {
                 BigDecimal Latitude = BigDecimal.valueOf(Double.parseDouble(textField7.getText()));
                 BigDecimal Longitude = BigDecimal.valueOf(Double.parseDouble(textField8.getText()));
+                String[] result = delegate.selectPostByLocation(Latitude, Longitude);
+                StringBuilder sb = new StringBuilder(65536);
+                for (String tmp : result)
+                    sb.append(tmp).append('\n');
+
+                textPane1.setText(sb.toString());
             }
         });
         getButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int UserID = Integer.parseInt(textField15.getText());
+                String Username = textField15.getText();
+                String[] result = delegate.selectPostByUser(Username);
+                StringBuilder sb = new StringBuilder(65536);
+                for (String tmp : result)
+                    sb.append(tmp).append('\n');
+
+                textPane2.setText(sb.toString());
             }
         });
         getButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String Content = textField9.getText();
+                String PostID = textField9.getText();
+                String[] result = delegate.findTrendingPosts(PostID);
+                StringBuilder sb = new StringBuilder(65536);
+                for (String tmp : result)
+                    sb.append(tmp).append('\n');
+
+                textPane3.setText(sb.toString());
             }
         });
         getButton4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String time = textField16.getText();
+                String[] result = delegate.findTopicWithPostsOnDate(time);
+                StringBuilder sb = new StringBuilder(65536);
+                for (String tmp : result)
+                    sb.append(tmp).append('\n');
 
+                textPane5.setText(sb.toString());
             }
         });
         getButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String[] result = delegate.postPerDay();
+                StringBuilder sb = new StringBuilder(65536);
+                for (String tmp : result)
+                    sb.append(tmp).append('\n');
 
+                textPane4.setText(sb.toString());
             }
         });
         getButton5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String[] result = delegate.highestReplyNumber();
+                StringBuilder sb = new StringBuilder(65536);
+                for (String tmp : result)
+                    sb.append(tmp).append('\n');
 
+                textPane6.setText(sb.toString());
             }
         });
         getButton6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String[] result = delegate.userInAllVotes();
+                StringBuilder sb = new StringBuilder(65536);
+                for (String tmp : result)
+                    sb.append(tmp).append('\n');
 
+                textPane7.setText(sb.toString());
+            }
+        });
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int UserID = Integer.parseInt(textField4.getText());
+                String Username = textField13.getText();
+                delegate.updateUserName(UserID, Username);
+            }
+        });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int PostID = Integer.parseInt(textField3.getText());
+                delegate.deletePost(PostID);
             }
         });
     }
