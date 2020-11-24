@@ -315,7 +315,7 @@ public class DatabaseHandler{
                     //TODO:
                     while(rset.next()){
                         BigDecimal Lat = rset.getBigDecimal("Latitude");
-                        BigDecimal Long = rset.getBigDecimal("Longtitude");
+                        BigDecimal Long = rset.getBigDecimal("Longitude");
                         Integer PostID = rset.getInt("PostID");
                         System.out.println("row: " + rowCount + "PostID is :" + PostID + ", " + "With Latitude and Longtitude: " + Lat + ", " + Long + + "\n");
                         ++rowCount;

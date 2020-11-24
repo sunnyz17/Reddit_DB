@@ -1,9 +1,8 @@
-package ca.ubc.cs304.ui;
+package src.ui;
 
-import ca.ubc.cs304.model.BranchModel;
-import ca.ubc.cs304.model.CommentModel;
-import ca.ubc.cs304.model.PostModel;
-import ca.ubc.cs304.model.UserModel;
+import src.Model.*;
+import src.Controller.*;
+
 
 import javax.swing.*;
 import java.awt.*;
