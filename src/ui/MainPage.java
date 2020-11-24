@@ -55,7 +55,7 @@ public class MainPage {
     private JTextField textField4;
     private JButton updateButton;
 
-    private TransactionsDelegate delegate = null;
+    private TerminalTransactionsDelegate delegate = null;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainPage");
@@ -146,19 +146,15 @@ public class MainPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String PostID = textField9.getText();
-                String[] result = delegate.findTrendingPosts(PostID);
-                StringBuilder sb = new StringBuilder(65536);
-                for (String tmp : result)
-                    sb.append(tmp).append('\n');
-
-                textPane3.setText(sb.toString());
+                String result = delegate.selectPostofTrendingTopic(PostID);
+                textPane3.setText(result);
             }
         });
         getButton4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String time = textField16.getText();
-                String[] result = delegate.findTopicWithPostsOnDate(time);
+                String[] result = delegate.selectTopicWithPostsOnDate(time);
                 StringBuilder sb = new StringBuilder(65536);
                 for (String tmp : result)
                     sb.append(tmp).append('\n');
@@ -180,22 +176,17 @@ public class MainPage {
         getButton5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] result = delegate.highestReplyNumber();
-                StringBuilder sb = new StringBuilder(65536);
-                for (String tmp : result)
-                    sb.append(tmp).append('\n');
-
-                textPane6.setText(sb.toString());
+                int result = delegate.highestCommentNumber();
+                textPane6.setText(String.valueOf(result));
             }
         });
         getButton6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] result = delegate.userInAllVotes();
+                String[] result = delegate.UserinAllVotes();
                 StringBuilder sb = new StringBuilder(65536);
                 for (String tmp : result)
                     sb.append(tmp).append('\n');
-
                 textPane7.setText(sb.toString());
             }
         });
