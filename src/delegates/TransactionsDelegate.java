@@ -14,23 +14,19 @@ import src.Model.*;
  */
 public interface TransactionsDelegate {
 	public void databaseSetup();
-	
-	
 
 	public void insertUser(UserModel model);
 	public void insertPost(PostModel model);
 	public void insertComment(CommentModel model);
-	
+
 	public void deletePost(int PostID);
+	public void updateUserName(int UserID, String Username);
 
-	public String[] selectPostofUser(String Username);
-	public String[] selectUsername();
-
-	//need fixes still
-
-	public void selectCoordofAllPosts();
-
-
-	
-	
+	public String[] selectPostByLocation(BigDecimal Latitude, BigDecimal Longitude);
+	public String[] selectPostByUser(String Username);
+	public String[] findTrendingUsers(String Content);
+	public String[] findTopicWithPostsOnDate(String time);
+	public String[] postPerDay();
+	public String[] highestReplyNumber();
+	public String[] topicInAllPosts();
 }
