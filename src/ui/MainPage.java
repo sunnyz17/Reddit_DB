@@ -45,6 +45,12 @@ public class MainPage {
     private JTextField textField16;
     private JButton getButton4;
     private JTextPane textPane5;
+    private JButton getButton5;
+    private JTextPane textPane6;
+    private JButton getButton6;
+    private JTextPane textPane7;
+
+    private TerminalTransactionsDelegate delegate = null;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainPage");
@@ -55,6 +61,7 @@ public class MainPage {
     }
 
     public MainPage() {
+        this.delegate = delegate;
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,7 +76,7 @@ public class MainPage {
                         Karma,
                         UserID,
                         Username);
-
+                delegate.insertUser(model);
             }
         });
         submitButton2.addActionListener(new ActionListener() {
@@ -84,6 +91,7 @@ public class MainPage {
                         Content,
                         UserID,
                         time);
+                delegate.insertPost(model);
             }
         });
         submitButton4.addActionListener(new ActionListener() {
@@ -100,14 +108,15 @@ public class MainPage {
                         PostID,
                         time,
                         content);
+                delegate.insertComment(model);
             }
         });
 
         getButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double Latitude = Double.parseDouble(textField7.getText());
-                double Longitude = Double.parseDouble(textField8.getText());
+                BigDecimal Latitude = BigDecimal.valueOf(Double.parseDouble(textField7.getText()));
+                BigDecimal Longitude = BigDecimal.valueOf(Double.parseDouble(textField8.getText()));
             }
         });
         getButton1.addActionListener(new ActionListener() {
@@ -125,11 +134,23 @@ public class MainPage {
         getButton4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                char[] time = textField16.getText().toCharArray();
+                String time = textField16.getText();
 
             }
         });
         getButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        getButton5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        getButton6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
