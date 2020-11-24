@@ -24,7 +24,7 @@ public interface TransactionsDelegate {
 
 	public String[] selectPostByLocation(BigDecimal Latitude, BigDecimal Longitude);
 	public String[] selectPostByUser(String Username);
-	public String[] findTrendingUsers(String Content);
+	public String[] findTrendingPosts(String Content);
 	public String[] findTopicWithPostsOnDate(String time);
 	public String[] postPerDay();
 	public String[] highestReplyNumber();
