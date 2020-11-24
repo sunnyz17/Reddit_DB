@@ -135,7 +135,7 @@ CREATE TABLE Comment(
 
 CREATE TABLE ReplyTo_r1(
 	ReplyID integer		NOT NULL,
-    Content CHAR(100)		NOT NULL,
+    Content CHAR(100)	NOT NULL,
     time CHAR(20)		NOT NULL,
 	UserID integer		NOT NULL,
     CommentID integer	NOT NULL,
@@ -301,10 +301,10 @@ INSERT INTO VoteFor(VoteID, time, UserID, PostID)
 VALUES(44220, "2020.09.01", 4468, 12250);
 
 INSERT INTO VoteFor(VoteID, time, UserID, PostID)
-VALUES(44221, "2020.09.01", 4470, 12255);
+VALUES(44221, "2020.09.01", 4468, 12255);
 
 INSERT INTO VoteFor(VoteID, time, UserID, PostID)
-VALUES(44222, "2020.09.01", 4471, 12253);
+VALUES(44222, "2020.09.01", 4468, 12253);
 
 
 
