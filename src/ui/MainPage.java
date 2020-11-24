@@ -1,9 +1,8 @@
 package src.ui;
 
-import src.Model.*;
-import src.Controller.*;
 import src.delegates.*;
-
+import src.Controller.*;
+import src.Model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.InputMethodListener;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.math.BigDecimal;
 
 public class MainPage {
     private JTextField textField1;
@@ -55,7 +56,7 @@ public class MainPage {
     private JTextField textField4;
     private JButton updateButton;
 
-    private TerminalTransactionsDelegate delegate = null;
+    private TransactionsDelegate delegate = null;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainPage");
