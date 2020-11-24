@@ -17,7 +17,7 @@ import src.Model.ReplyToModel;
 import src.Model.TrendingTopicModel;
 import src.Model.UserModel;
 
-
+import src.delegates.*;
 public class DatabaseHandler{
 
 	private static final String EXCEPTION_TAG = "[EXCEPTION]";
@@ -175,8 +175,60 @@ public class DatabaseHandler{
 
         }
 
+        public String[] selectPostByLocation(BigDecimal Latitude, BigDecimal Longitude){
+            ArrayList<String> result = new ArrayList<String>();
+            Connection conn = null;
+    
+            try{
+                    Class.forName("com.mysql.jdbc.Driver");
+
+                    //Open a connection
+                    System.out.println("Connecting to database...");
+                    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                    connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                
+                    //INSERT SQL SELECT STATEMENT HERE
+                    PreparedStatement ps = connection.prepareStatement( "SELECT post FROM locationOf");
+                    ps.setBigDecimal(1, Latitude);
+                    ps.setBigDecimal(2, Longitude);
+
+                    ResultSet rset = ps.executeQuery();
+                    int rowCount = ps.executeUpdate();
+                    if (rowCount == 0) {
+                        System.out.println(" Coordinates with :  " + Latitude + ", " + Longitude + "does not exist!");
+                    }else{
+                        System.out.println("The Posts by " + Latitude + ", " + Longitude + "selected are:");
+
+                        while(rset.next()){
+                            System.out.println("user post " + rowCount + rset.getString("Content"));
+                            result.add(rset.getString("Content"));
+                        }
+                    }
+
+                    ps.close();
+               
+                }catch(SQLException ex){
+                    ex.printStackTrace();
+                    rollbackConnection();
+                }catch(Exception e){
+                    //Handle errors for Class.forName
+                    e.printStackTrace();
+                }try{
+                    if(conn!=null)
+                        conn.close();
+                }catch(SQLException se){
+                    se.printStackTrace();
+                }//end try
+
+                
+                System.out.println("finished Posts from Username select!");
+                return result.toArray(new String[result.size()]);
+        }
+
+
+
         //selects all the posts in the database
-        public String[] selectPostofUser(String Username){
+        public String[] selectPostByUser(String Username){
             ArrayList<String> result = new ArrayList<String>();
             Connection conn = null;
     

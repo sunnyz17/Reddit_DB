@@ -2,6 +2,7 @@ package src.delegates;
 
 import src.Controller.*;
 import src.Model.*;
+import java.math.BigDecimal;
 
 /**
  * This interface uses the delegation design pattern where instead of having
@@ -24,7 +25,7 @@ public interface TransactionsDelegate {
 
 	public String[] selectPostByLocation(BigDecimal Latitude, BigDecimal Longitude);
 	public String[] selectPostByUser(String Username);
-	public String[] findTrendingUsers(String Content);
+	public String selectPostofTrendingTopic(String Trending);
 	public String[] findTopicWithPostsOnDate(String time);
 	public String[] postPerDay();
 	public String[] highestReplyNumber();
