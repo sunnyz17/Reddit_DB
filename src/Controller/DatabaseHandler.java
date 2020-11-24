@@ -99,10 +99,9 @@ public class DatabaseHandler{
             }
         }
 
-        //deletes all posts with ID >= 1000
+        //deletes all posts with ID
         public void deletePost(int PostID){
             Connection conn = null;
-            Statement stmt = null;
 
             try{
                 Class.forName("com.mysql.jdbc.Driver");
@@ -110,11 +109,17 @@ public class DatabaseHandler{
                 // Open a connection
                 System.out.println("Connecting to database...");
                 conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                stmt = conn.createStatement();
+
+                PreparedStatement ps = conn.prepareStatement("DELETE FROM Post WHERE PostID = ?");
+                ps.setInt(1, PostID);
+                int rowCount = ps.executeUpdate();
+                if (rowCount == 0) {
+                    System.out.println(" Post with PostID: " + PostID + " does not exist!");
+                }
+                
+                conn.commit();
+                ps.close();
             
-                //INSERT SQL SELECT STATEMENT HERE
-                String strSelect = "DELETE FROM Post WHERE PostID >= 1000";
-                stmt.executeQuery(strSelect);
 
             }catch(SQLException ex){
                 ex.printStackTrace();
@@ -128,14 +133,53 @@ public class DatabaseHandler{
             }catch(SQLException se){
                 se.printStackTrace();
             }//end try
-            System.out.println("FINISHED DELETING ALL POSTS WITH ID >= 1000");
+            System.out.println("FINISHED DELETING POST WITH ID" + PostID);
+        }
+
+        //updates specific userID with new Username
+        public void updateUserName(int UserID, String Username){
+            Connection conn = null;
+
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+
+                // Open a connection
+                System.out.println("Connecting to database...");
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+                PreparedStatement ps = conn.prepareStatement("UPDATE User SET Username = ? WHERE UserID = ?");
+                ps.setString(1, Username);
+                ps.setInt(2, UserID);
+
+                int rowCount = ps.executeUpdate();
+                if (rowCount == 0) {
+                    System.out.println(" User with UserID: " + UserID + " does not exist!");
+                }
+                
+                conn.commit();
+                ps.close();
+            
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                rollbackConnection();
+            }catch(Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            }try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end try
+            System.out.println("FINISHED Updating UserID: " + UserID + " with new username: " + Username);
+
         }
 
         //selects all the posts in the database
         public String[] selectPostofUser(String Username){
             ArrayList<String> result = new ArrayList<String>();
             Connection conn = null;
-            Statement stmt = null;
+    
             try{
                     Class.forName("com.mysql.jdbc.Driver");
 
@@ -143,7 +187,6 @@ public class DatabaseHandler{
                     System.out.println("Connecting to database...");
                     conn = DriverManager.getConnection(DB_URL, USER, PASS);
                     connection = DriverManager.getConnection(DB_URL, USER, PASS);
-                    stmt = conn.createStatement();
                 
                     //INSERT SQL SELECT STATEMENT HERE
                     PreparedStatement ps = connection.prepareStatement( "SELECT PostID, Content, p.UserID FROM Post p, User u WHERE p.UserID = p.UserID AND u.username = ?");
@@ -185,7 +228,7 @@ public class DatabaseHandler{
         public String selectPostofTrendingTopic(String Trending){
             String result = "";
             Connection conn = null;
-            Statement stmt = null;
+       
             try{
                     Class.forName("com.mysql.jdbc.Driver");
 
@@ -193,7 +236,7 @@ public class DatabaseHandler{
                     System.out.println("Connecting to database...");
                     conn = DriverManager.getConnection(DB_URL, USER, PASS);
                     connection = DriverManager.getConnection(DB_URL, USER, PASS);
-                    stmt = conn.createStatement();
+                
                 
                     //INSERT SQL SELECT STATEMENT HERE
                     PreparedStatement ps = connection.prepareStatement( "SELECT Content FROM TrendingTopic WHERE TopicID = ?");
@@ -231,11 +274,6 @@ public class DatabaseHandler{
                 System.out.println("finished Trending Topic Post select!");
                 return result;
         }
-
-
-
-
-
 
 
         //inserts a post specified by a user
