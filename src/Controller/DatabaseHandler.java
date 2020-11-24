@@ -132,8 +132,8 @@ public class DatabaseHandler{
         }
 
         //selects all the posts in the database
-        public PostModel[] selectPost(){
-            ArrayList<PostModel> result = new ArrayList<PostModel>();
+        public String[] selectPostofUser(String Username){
+            ArrayList<String> result = new ArrayList<String>();
             Connection conn = null;
             Statement stmt = null;
             try{
@@ -146,24 +146,23 @@ public class DatabaseHandler{
                     stmt = conn.createStatement();
                 
                     //INSERT SQL SELECT STATEMENT HERE
-                    String strSelect = "SELECT * FROM Post";
-                    
-                    ResultSet rset = stmt.executeQuery(strSelect);
-                    System.out.println("The records selected are:");
-                    int rowCount = 0;
-                    
-                    //here, you select each entitites from the Post table 
-                    //this loop gets all the rows in the Post table
-                    while(rset.next()){
-                        PostModel model = new PostModel(
-                            rset.getInt("PostID"),
-                            rset.getString("Content"),
-                            rset.getInt("UserID"),
-                            rset.getString("timee"));
+                    PreparedStatement ps = connection.prepareStatement( "SELECT PostID, Content, p.UserID FROM Post p, User u WHERE p.UserID = p.UserID AND u.username = ?");
+                    ps.setString(1, Username);
 
-                        System.out.println(model + "\n");
-                        result.add(model);
+                    ResultSet rset = ps.executeQuery();
+                    int rowCount = ps.executeUpdate();
+                    if (rowCount == 0) {
+                        System.out.println(" Username:  " + Username + " does not exist!");
+                    }else{
+                        System.out.println("The Posts by " + Username + " selected are:");
+
+                        while(rset.next()){
+                            System.out.println("user post " + rowCount + rset.getString("Content"));
+                            result.add(rset.getString("Content"));
+                        }
                     }
+
+                    ps.close();
                
                 }catch(SQLException ex){
                     ex.printStackTrace();
@@ -179,9 +178,65 @@ public class DatabaseHandler{
                 }//end try
 
                 
-                System.out.println("finished select!");
-                return result.toArray(new PostModel[result.size()]);
+                System.out.println("finished Posts from Username select!");
+                return result.toArray(new String[result.size()]);
         }
+
+        public String selectPostofTrendingTopic(String Trending){
+            String result = "";
+            Connection conn = null;
+            Statement stmt = null;
+            try{
+                    Class.forName("com.mysql.jdbc.Driver");
+
+                    //Open a connection
+                    System.out.println("Connecting to database...");
+                    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                    connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                    stmt = conn.createStatement();
+                
+                    //INSERT SQL SELECT STATEMENT HERE
+                    PreparedStatement ps = connection.prepareStatement( "SELECT Content FROM TrendingTopic WHERE TopicID = ?");
+                    ps.setString(1, Trending);
+
+                    ResultSet rset = ps.executeQuery();
+                    int rowCount = ps.executeUpdate();
+                    if (rowCount == 0) {
+                        System.out.println(" TrendingTopic:  " + Trending + " does not exist!");
+                    }else{
+                        System.out.println("The Posts by " + Trending + " selected are:");
+
+                        while(rset.next()){
+                            System.out.println("user post " + rowCount + rset.getString("Content"));
+                            result = rset.getString("Content");
+                        }
+                    }
+
+                    ps.close();
+               
+                }catch(SQLException ex){
+                    ex.printStackTrace();
+                    rollbackConnection();
+                }catch(Exception e){
+                    //Handle errors for Class.forName
+                    e.printStackTrace();
+                }try{
+                    if(conn!=null)
+                        conn.close();
+                }catch(SQLException se){
+                    se.printStackTrace();
+                }//end try
+
+                
+                System.out.println("finished Trending Topic Post select!");
+                return result;
+        }
+
+
+
+
+
+
 
         //inserts a post specified by a user
         public void insertPost(PostModel model){
@@ -317,7 +372,7 @@ public class DatabaseHandler{
                         BigDecimal Lat = rset.getBigDecimal("Latitude");
                         BigDecimal Long = rset.getBigDecimal("Longitude");
                         Integer PostID = rset.getInt("PostID");
-                        System.out.println("row: " + rowCount + "PostID is :" + PostID + ", " + "With Latitude and Longtitude: " + Lat + ", " + Long + + "\n");
+                        System.out.println("row: " + rowCount + "PostID is :" + PostID + ", " + "With Latitude and Longitude: " + Lat + ", " + Long + + "\n");
                         ++rowCount;
                     }
 
