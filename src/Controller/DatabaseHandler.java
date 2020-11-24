@@ -218,6 +218,82 @@ public class DatabaseHandler{
         }
 
 
+        //inserts a user 
+        public void insertUser(UserModel model){
+            Connection conn = null;
+            try{
+                    Class.forName("com.mysql.jdbc.Driver");
+
+                    // Open a connection
+                    System.out.println("Connecting to database...");
+                    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+                    PreparedStatement ps = conn.prepareStatement("INSERT INTO Post VALUES (?,?,?,?,?)");
+
+                    ps.setString(1, model.getemail());
+                    ps.setString(2, model.getPass());
+                    ps.setString(3, model.getUsername());
+                    ps.setInt(4, model.getUserID());
+                    ps.setInt(5, model.getKarma());
+
+                    ps.executeUpdate();
+
+                    ps.close();
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                rollbackConnection();
+            }catch(Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            }try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end try
+        }
+
+
+        //inserts a comment
+        public void insertComment(CommentModel model){
+            Connection conn = null;
+            try{
+                    Class.forName("com.mysql.jdbc.Driver");
+
+                    // Open a connection
+                    System.out.println("Connecting to database...");
+                    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+                    PreparedStatement ps = conn.prepareStatement("INSERT INTO Post VALUES (?,?,?,?)");
+
+                    ps.setInt(1, model.getCommentID());
+                    ps.setInt(2, model.getUserID());
+                    ps.setInt(3, model.getPostID());
+                    ps.setString(4, model.getTime());
+                    ps.setString(5, model.getContent());
+
+                    ps.executeUpdate();
+
+                    ps.close();
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                rollbackConnection();
+            }catch(Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            }try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end try
+        }
+
+        
+
+
+
+
 
         //gets the coordinates of all the posts
         public void selectCoordofAllPosts(){
