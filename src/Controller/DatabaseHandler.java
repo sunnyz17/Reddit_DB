@@ -232,7 +232,9 @@ public class DatabaseHandler{
 
         //selects all the posts in the database
         public String[] selectPostByUser(String Username){
-            ArrayList<String> result = new ArrayList<String>();
+            ArrayList<String[]> result = new ArrayList<String[]>();
+            String[] add = new String[3];
+
             Connection conn = null;
     
             try{
@@ -255,13 +257,16 @@ public class DatabaseHandler{
                         System.out.println("The Posts by " + Username + " selected are:");
 
                         while(rset.next()){
-                            System.out.println("user post " + rowCount + rset.getString("Content"));
-                            result.add(rset.getString("Content"));
+                            System.out.println("user post " + rowCount + rset.getString("Content")); 
+
+                            add[0] = Integer.toString(rset.getInt("PostID"));
+                            add[1] = rset.getString("Content");
+                            add[2] = Integer.toString(rset.getInt("UserID"));
+
+                            result.add(add);
                         }
                     }
-
                     ps.close();
-               
                 }catch(SQLException ex){
                     ex.printStackTrace();
                     rollbackConnection();
@@ -280,6 +285,7 @@ public class DatabaseHandler{
                 return result.toArray(new String[result.size()]);
         }
 
+        //selecting the post of a user specified trending topic
         public String selectPostofTrendingTopic(String Trending){
             String result = "";
             Connection conn = null;
@@ -366,7 +372,7 @@ public class DatabaseHandler{
         }
 
 
-        //inserts a user 
+        //inserts a user with parameters specified by a user
         public void insertUser(UserModel model){
             Connection conn = null;
             try{
@@ -376,7 +382,7 @@ public class DatabaseHandler{
                     System.out.println("Connecting to database...");
                     conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-                    PreparedStatement ps = conn.prepareStatement("INSERT INTO Post VALUES (?,?,?,?,?)");
+                    PreparedStatement ps = conn.prepareStatement("INSERT INTO User VALUES (?,?,?,?,?)");
 
                     ps.setString(1, model.getemail());
                     ps.setString(2, model.getPass());
@@ -412,7 +418,7 @@ public class DatabaseHandler{
                     System.out.println("Connecting to database...");
                     conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-                    PreparedStatement ps = conn.prepareStatement("INSERT INTO Post VALUES (?,?,?,?)");
+                    PreparedStatement ps = conn.prepareStatement("INSERT INTO Comment VALUES (?,?,?,?)");
 
                     ps.setInt(1, model.getCommentID());
                     ps.setInt(2, model.getUserID());
@@ -437,7 +443,106 @@ public class DatabaseHandler{
             }//end try
         }
 
-        
+        public String[] selectTopicWithPostsOnDate(String time){
+            ArrayList<String> result = new ArrayList<String>();
+            Connection conn = null;
+
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+
+                //Open a connection
+                System.out.println("Connecting to database...");
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            
+                //INSERT SQL SELECT STATEMENT HERE
+                PreparedStatement ps = connection.prepareStatement( "SELECT Content FROM TrendingTopic WHERE time = ?");
+                ps.setString(1, time);
+
+                ResultSet rset = ps.executeQuery();
+                int rowCount = ps.executeUpdate();
+                if (rowCount == 0) {
+                    System.out.println(" TrendingTopic with " + time + " does not exist!");
+                }else{
+                    System.out.println("The trendingtopic post on " + time + " selected are:");
+
+                    while(rset.next()){
+                        System.out.println("TrendingTopic post  " + rowCount + rset.getString("Content"));
+                        result.add(rset.getString("Content"));
+                    }
+                }
+
+                ps.close();
+
+
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                rollbackConnection();
+            }catch(Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            }try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end try
+
+            return result.toArray(new String[result.size()]);
+        }
+
+        public String[] postPerDay(){
+            ArrayList<String[]> result = new ArrayList<String[]>();
+            Connection conn = null;
+            String[] add = new String[2];
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+
+                //Open a connection
+                System.out.println("Connecting to database...");
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            
+                //INSERT SQL SELECT STATEMENT HERE
+                PreparedStatement ps = connection.prepareStatement( "Select Time, count(*) From VoteFor Group By Time;");
+                
+
+                ResultSet rset = ps.executeQuery();
+                int rowCount = ps.executeUpdate();
+                if (rowCount == 0) {
+                    System.out.println(" Date does not exist!");
+                }else{
+                    System.out.println("The posts selected are:");
+
+                    while(rset.next()){
+                        
+                        add[0] = rset.getString("Time");
+                        add[1] = Integer.toString(rset.getInt("Count"));
+                        result.add(add);
+                    }
+                }
+
+                ps.close();
+
+
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                rollbackConnection();
+            }catch(Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            }try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end try
+
+            System.out.println("posts per day is " + result + " where [0] is date and [1] is count of posts");
+            return result.toArray(new String[result.size()]);
+        }
 
 
 
@@ -465,7 +570,7 @@ public class DatabaseHandler{
                         BigDecimal Lat = rset.getBigDecimal("Latitude");
                         BigDecimal Long = rset.getBigDecimal("Longitude");
                         Integer PostID = rset.getInt("PostID");
-                        System.out.println("row: " + rowCount + "PostID is :" + PostID + ", " + "With Latitude and Longitude: " + Lat + ", " + Long + + "\n");
+                        System.out.println("row: " + rowCount + "PostID is :" + PostID + ", " + "With Latitude and Longitude: " + Lat + ", " + Long  + "\n");
                         ++rowCount;
                     }
 
@@ -482,50 +587,6 @@ public class DatabaseHandler{
             }catch(SQLException se){
                 se.printStackTrace();
             }//end try
-        }
-
-
-
-        //gets all the usernames of users 
-        public String[] selectUsername(){
-            ArrayList<String> result = new ArrayList<String>();
-            Connection conn = null;
-            Statement stmt = null;
-            try{
-                    Class.forName("com.mysql.jdbc.Driver");
-
-                    //Open a connection
-                    System.out.println("Connecting to database...");
-                    System.out.println("Selecting all Usernames");
-                    conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                    stmt = conn.createStatement();
-
-
-                    String strSelect = "SELECT Username FROM User";
-                    ResultSet rset = stmt.executeQuery(strSelect);
-                    int rowCount = 0;
-
-                    while(rset.next()){
-                        String Username = rset.getString("Username");
-                        System.out.println("User: " + rowCount + " " + Username + "\n");
-                        result.add(Username);
-                        ++rowCount;
-                    }
-
-
-            }catch(SQLException ex){
-                ex.printStackTrace();
-                rollbackConnection();
-            }catch(Exception e){
-                //Handle errors for Class.forName
-                e.printStackTrace();
-            }try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }//end try
-            return result.toArray(new String[result.size()]);
         }
 
 
