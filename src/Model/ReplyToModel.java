@@ -5,10 +5,10 @@ public class ReplyToModel {
     private final int ReplyID;
     private final int UserID;
     private final int CommentID;
-    private final String Time;
+    private final char Time;
     private final String Content;
 
-    public ReplyToModel(int ReplyID, int UserID, int CommentID, String Content, String Time){
+    public ReplyToModel(int ReplyID, int UserID, int CommentID, String Content, char Time){
         this.ReplyID = ReplyID;
         this.UserID= UserID;
         this.CommentID = CommentID;
@@ -22,7 +22,7 @@ public class ReplyToModel {
     public int getUserID(){
         return UserID;
     }
-    public String getTime(){
+    public char getTime(){
         return Time;
     }
     public int getCommentID(){
