@@ -3,11 +3,11 @@ package src.Model;
 public class PostModel{
 
     private final int UserID;
-    private final char Time;
+    private final String Time;
     private final String Content;
     private final int PostID;
 
-    public PostModel(int PostID, String Content, int UserID, char Time){
+    public PostModel(int PostID, String Content, int UserID, String Time){
         this.PostID = PostID;
         this.Content = Content;
         this.UserID = UserID;
@@ -20,7 +20,7 @@ public class PostModel{
     public int getUserID(){
         return UserID;
     }
-    public char getTime(){
+    public String getTime(){
         return Time;
     }
     public String getContent(){

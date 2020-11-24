@@ -99,10 +99,9 @@ public class DatabaseHandler{
             }
         }
 
-        //deletes all posts with ID >= 1000
+        //deletes all posts with ID
         public void deletePost(int PostID){
             Connection conn = null;
-            Statement stmt = null;
 
             try{
                 Class.forName("com.mysql.jdbc.Driver");
@@ -110,11 +109,17 @@ public class DatabaseHandler{
                 // Open a connection
                 System.out.println("Connecting to database...");
                 conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                stmt = conn.createStatement();
+
+                PreparedStatement ps = conn.prepareStatement("DELETE FROM Post WHERE PostID = ?");
+                ps.setInt(1, PostID);
+                int rowCount = ps.executeUpdate();
+                if (rowCount == 0) {
+                    System.out.println(" Post with PostID: " + PostID + " does not exist!");
+                }
+                
+                conn.commit();
+                ps.close();
             
-                //INSERT SQL SELECT STATEMENT HERE
-                String strSelect = "DELETE FROM Post WHERE PostID >= 1000";
-                stmt.executeQuery(strSelect);
 
             }catch(SQLException ex){
                 ex.printStackTrace();
@@ -128,14 +133,53 @@ public class DatabaseHandler{
             }catch(SQLException se){
                 se.printStackTrace();
             }//end try
-            System.out.println("FINISHED DELETING ALL POSTS WITH ID >= 1000");
+            System.out.println("FINISHED DELETING POST WITH ID" + PostID);
+        }
+
+        //updates specific userID with new Username
+        public void updateUserName(int UserID, String Username){
+            Connection conn = null;
+
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+
+                // Open a connection
+                System.out.println("Connecting to database...");
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+                PreparedStatement ps = conn.prepareStatement("UPDATE User SET Username = ? WHERE UserID = ?");
+                ps.setString(1, Username);
+                ps.setInt(2, UserID);
+
+                int rowCount = ps.executeUpdate();
+                if (rowCount == 0) {
+                    System.out.println(" User with UserID: " + UserID + " does not exist!");
+                }
+                
+                conn.commit();
+                ps.close();
+            
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                rollbackConnection();
+            }catch(Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            }try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end try
+            System.out.println("FINISHED Updating UserID: " + UserID + " with new username: " + Username);
+
         }
 
         //selects all the posts in the database
-        public PostModel[] selectPost(){
-            ArrayList<PostModel> result = new ArrayList<PostModel>();
+        public String[] selectPostofUser(String Username){
+            ArrayList<String> result = new ArrayList<String>();
             Connection conn = null;
-            Statement stmt = null;
+    
             try{
                     Class.forName("com.mysql.jdbc.Driver");
 
@@ -143,27 +187,25 @@ public class DatabaseHandler{
                     System.out.println("Connecting to database...");
                     conn = DriverManager.getConnection(DB_URL, USER, PASS);
                     connection = DriverManager.getConnection(DB_URL, USER, PASS);
-                    stmt = conn.createStatement();
                 
                     //INSERT SQL SELECT STATEMENT HERE
-                    String strSelect = "SELECT * FROM Post";
-                    
-                    ResultSet rset = stmt.executeQuery(strSelect);
-                    System.out.println("The records selected are:");
-                    int rowCount = 0;
-                    
-                    //here, you select each entitites from the Post table 
-                    //this loop gets all the rows in the Post table
-                    while(rset.next()){
-                        PostModel model = new PostModel(
-                            rset.getInt("PostID"),
-                            rset.getString("Content"),
-                            rset.getInt("UserID"),
-                            rset.getString("timee"));
+                    PreparedStatement ps = connection.prepareStatement( "SELECT PostID, Content, p.UserID FROM Post p, User u WHERE p.UserID = p.UserID AND u.username = ?");
+                    ps.setString(1, Username);
 
-                        System.out.println(model + "\n");
-                        result.add(model);
+                    ResultSet rset = ps.executeQuery();
+                    int rowCount = ps.executeUpdate();
+                    if (rowCount == 0) {
+                        System.out.println(" Username:  " + Username + " does not exist!");
+                    }else{
+                        System.out.println("The Posts by " + Username + " selected are:");
+
+                        while(rset.next()){
+                            System.out.println("user post " + rowCount + rset.getString("Content"));
+                            result.add(rset.getString("Content"));
+                        }
                     }
+
+                    ps.close();
                
                 }catch(SQLException ex){
                     ex.printStackTrace();
@@ -179,9 +221,60 @@ public class DatabaseHandler{
                 }//end try
 
                 
-                System.out.println("finished select!");
-                return result.toArray(new PostModel[result.size()]);
+                System.out.println("finished Posts from Username select!");
+                return result.toArray(new String[result.size()]);
         }
+
+        public String selectPostofTrendingTopic(String Trending){
+            String result = "";
+            Connection conn = null;
+       
+            try{
+                    Class.forName("com.mysql.jdbc.Driver");
+
+                    //Open a connection
+                    System.out.println("Connecting to database...");
+                    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                    connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                
+                
+                    //INSERT SQL SELECT STATEMENT HERE
+                    PreparedStatement ps = connection.prepareStatement( "SELECT Content FROM TrendingTopic WHERE TopicID = ?");
+                    ps.setString(1, Trending);
+
+                    ResultSet rset = ps.executeQuery();
+                    int rowCount = ps.executeUpdate();
+                    if (rowCount == 0) {
+                        System.out.println(" TrendingTopic:  " + Trending + " does not exist!");
+                    }else{
+                        System.out.println("The Posts by " + Trending + " selected are:");
+
+                        while(rset.next()){
+                            System.out.println("user post " + rowCount + rset.getString("Content"));
+                            result = rset.getString("Content");
+                        }
+                    }
+
+                    ps.close();
+               
+                }catch(SQLException ex){
+                    ex.printStackTrace();
+                    rollbackConnection();
+                }catch(Exception e){
+                    //Handle errors for Class.forName
+                    e.printStackTrace();
+                }try{
+                    if(conn!=null)
+                        conn.close();
+                }catch(SQLException se){
+                    se.printStackTrace();
+                }//end try
+
+                
+                System.out.println("finished Trending Topic Post select!");
+                return result;
+        }
+
 
         //inserts a post specified by a user
         public void insertPost(PostModel model){
@@ -218,6 +311,82 @@ public class DatabaseHandler{
         }
 
 
+        //inserts a user 
+        public void insertUser(UserModel model){
+            Connection conn = null;
+            try{
+                    Class.forName("com.mysql.jdbc.Driver");
+
+                    // Open a connection
+                    System.out.println("Connecting to database...");
+                    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+                    PreparedStatement ps = conn.prepareStatement("INSERT INTO Post VALUES (?,?,?,?,?)");
+
+                    ps.setString(1, model.getemail());
+                    ps.setString(2, model.getPass());
+                    ps.setString(3, model.getUsername());
+                    ps.setInt(4, model.getUserID());
+                    ps.setInt(5, model.getKarma());
+
+                    ps.executeUpdate();
+
+                    ps.close();
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                rollbackConnection();
+            }catch(Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            }try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end try
+        }
+
+
+        //inserts a comment
+        public void insertComment(CommentModel model){
+            Connection conn = null;
+            try{
+                    Class.forName("com.mysql.jdbc.Driver");
+
+                    // Open a connection
+                    System.out.println("Connecting to database...");
+                    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+                    PreparedStatement ps = conn.prepareStatement("INSERT INTO Post VALUES (?,?,?,?)");
+
+                    ps.setInt(1, model.getCommentID());
+                    ps.setInt(2, model.getUserID());
+                    ps.setInt(3, model.getPostID());
+                    ps.setString(4, model.getTime());
+                    ps.setString(5, model.getContent());
+
+                    ps.executeUpdate();
+
+                    ps.close();
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                rollbackConnection();
+            }catch(Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            }try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end try
+        }
+
+        
+
+
+
+
 
         //gets the coordinates of all the posts
         public void selectCoordofAllPosts(){
@@ -239,9 +408,9 @@ public class DatabaseHandler{
                     //TODO:
                     while(rset.next()){
                         BigDecimal Lat = rset.getBigDecimal("Latitude");
-                        BigDecimal Long = rset.getBigDecimal("Longtitude");
+                        BigDecimal Long = rset.getBigDecimal("Longitude");
                         Integer PostID = rset.getInt("PostID");
-                        System.out.println("row: " + rowCount + "PostID is :" + PostID + ", " + "With Latitude and Longtitude: " + Lat + ", " + Long + + "\n");
+                        System.out.println("row: " + rowCount + "PostID is :" + PostID + ", " + "With Latitude and Longitude: " + Lat + ", " + Long + + "\n");
                         ++rowCount;
                     }
 
